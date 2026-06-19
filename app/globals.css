@@ -26,9 +26,18 @@
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
 
+  /* Impact section — dark band for Proof */
+  --impact-bg: #0a0a0a;
+  --impact-fg: #fafafa;
+  --impact-muted: #a3a3a3;
+  --impact-border: rgba(255, 255, 255, 0.08);
+  --impact-accent: #3b82f6;
+
   /* Layout rhythm — 8px grid, mobile-first */
   --section-y: 80px;
   --section-y-lg: 128px;
+  --section-y-impact: 112px;
+  --section-y-impact-lg: 160px;
   --container-x: 20px;
 }
 
@@ -211,6 +220,97 @@
   .nav-surface {
     @apply border-b border-border-subtle backdrop-blur-md;
     background: color-mix(in srgb, var(--background) 90%, transparent);
+  }
+
+  /* Impact section — Proof band */
+  .section-impact {
+    padding-top: var(--section-y-impact);
+    padding-bottom: var(--section-y-impact);
+    background: var(--impact-bg);
+    color: var(--impact-fg);
+  }
+
+  @media (min-width: 1024px) {
+    .section-impact {
+      padding-top: var(--section-y-impact-lg);
+      padding-bottom: var(--section-y-impact-lg);
+    }
+  }
+
+  .section-header-impact .text-impact {
+    color: var(--impact-fg);
+  }
+
+  .overline-impact {
+    color: var(--impact-muted);
+  }
+
+  .lead-impact {
+    color: var(--impact-muted);
+  }
+
+  .proof-clients {
+    @apply mx-auto mb-grid-10 flex max-w-section flex-col items-center justify-center gap-grid-6 sm:mb-grid-12 sm:flex-row sm:gap-grid-12 lg:gap-grid-16;
+    list-style: none;
+    padding: 0;
+  }
+
+  .proof-client-name {
+    @apply text-base font-medium tracking-tight;
+    color: color-mix(in srgb, var(--impact-fg) 55%, transparent);
+    letter-spacing: -0.02em;
+  }
+
+  .proof-pillars {
+    @apply mx-auto grid max-w-section grid-cols-1 gap-grid-3 border-t pt-grid-10 sm:grid-cols-3 sm:pt-grid-12;
+    border-color: var(--impact-border);
+  }
+
+  .proof-pillar {
+    @apply px-grid-2 text-center sm:text-left;
+  }
+
+  .proof-pillar-label {
+    @apply block text-h4 font-semibold;
+    color: var(--impact-fg);
+  }
+
+  .proof-pillar-hint {
+    @apply mt-grid-1 text-body-sm;
+    color: var(--impact-muted);
+  }
+
+  /* Contact — closing band */
+  .section-contact {
+    position: relative;
+    padding-top: var(--section-y-impact);
+    padding-bottom: var(--section-y-impact);
+    background: #050505;
+    color: var(--impact-fg);
+  }
+
+  @media (min-width: 1024px) {
+    .section-contact {
+      padding-top: var(--section-y-impact-lg);
+      padding-bottom: calc(var(--section-y-impact-lg) * 0.85);
+    }
+  }
+
+  .contact-panel {
+    @apply rounded-xl border p-grid-6 sm:p-grid-8;
+    border-color: var(--impact-border);
+    background: color-mix(in srgb, var(--impact-fg) 3%, transparent);
+  }
+
+  .contact-email {
+    @apply font-[family-name:var(--font-display)] text-[1.5rem] font-medium tracking-[-0.025em] sm:text-[1.75rem] lg:text-[2rem];
+    color: var(--impact-fg);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .contact-email:hover {
+    color: var(--impact-accent);
   }
 }
 
