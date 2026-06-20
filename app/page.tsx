@@ -1,5 +1,5 @@
 import { Navigation, Footer } from "./components";
-import { Hero, Services, Proof, Contact } from "./sections";
+import { Hero, Founders, Services, Contact } from "./sections";
 
 export default function Home() {
   return (
@@ -7,8 +7,8 @@ export default function Home() {
       <Navigation />
       <main id="main-content">
         <Hero />
+        <Founders />
         <Services />
-        <Proof />
         <Contact />
       </main>
       <Footer />

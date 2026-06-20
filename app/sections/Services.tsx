@@ -1,200 +1,165 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useInView } from "../hooks/useInView";
-import { Brain, Database, Cloud, Bot, Rocket } from "lucide-react";
+import { useRef } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { anchor } from "@/lib/utils";
 
-interface Service {
-  number: string;
-  icon: React.ElementType;
+interface Capability {
+  index: string;
   title: string;
   tagline: string;
-  capabilities: string[];
-  span: string;
+  meta: string;
+  featured?: boolean;
 }
 
-const services: Service[] = [
+const capabilities: Capability[] = [
   {
-    number: "01",
-    icon: Brain,
-    title: "AI & Generative AI",
-    tagline: "Strategy through production — LLMs, agents, and enterprise AI at scale.",
-    capabilities: ["AI Strategy", "Generative Apps", "LLM Integration", "AI Agents"],
-    span: "md:col-span-7 md:row-span-2",
+    index: "01",
+    title: "AI & Intelligent Systems",
+    tagline:
+      "Executive AI strategy through governed LLM agents — built for the risk review, not the pilot deck.",
+    meta: "Live in regulated finance",
+    featured: true,
   },
   {
-    number: "02",
-    icon: Database,
+    index: "02",
     title: "Data & Analytics",
-    tagline: "Turn raw data into decisions with modern pipelines and real-time insight.",
-    capabilities: ["Data Engineering", "Warehousing", "BI & Analytics"],
-    span: "md:col-span-5",
+    tagline:
+      "Pipelines and models your leadership uses weekly — not another quarterly report.",
+    meta: "Daily decision models",
   },
   {
-    number: "03",
-    icon: Cloud,
-    title: "Cloud Solutions",
-    tagline: "Cloud-native architecture, migration, and infrastructure that scales.",
-    capabilities: ["Migration", "Multi-Cloud", "DevOps & K8s"],
-    span: "md:col-span-4",
+    index: "03",
+    title: "Cloud & Platform Engineering",
+    tagline:
+      "Migrate and operate multi-cloud platforms with security sign-off in the architecture, not bolted on at the end.",
+    meta: "Multi-region, audited",
   },
   {
-    number: "04",
-    icon: Bot,
-    title: "Intelligent Automation",
-    tagline: "Automate workflows and operations with AI-driven process intelligence.",
-    capabilities: ["RPA", "Workflow Automation", "Integration"],
-    span: "md:col-span-4",
+    index: "04",
+    title: "Workflow Automation",
+    tagline:
+      "Replace manual handoffs across ERP, CRM, and the custom systems your teams already run.",
+    meta: "ERP / CRM / custom",
   },
   {
-    number: "05",
-    icon: Rocket,
-    title: "Digital Transformation",
-    tagline: "Modernize platforms, products, and architecture for what's next.",
-    capabilities: ["Modernization", "Product Engineering", "Innovation"],
-    span: "md:col-span-4",
+    index: "05",
+    title: "Application Modernization",
+    tagline:
+      "Rebuild legacy products on modern stacks — phased delivery, no big-bang cutover.",
+    meta: "Phased, no cutover",
   },
 ];
+
+const ease = [0.16, 1, 0.3, 1] as const;
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: (delay: number) => ({
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.55,
-      delay,
-      ease: [0.25, 0.1, 0.25, 1],
-    },
+    transition: { duration: 0.5, delay, ease },
   }),
 };
 
-interface ServiceCellProps {
-  service: Service;
-  index: number;
-  isInView: boolean;
-  featured?: boolean;
-}
-
-function ServiceCell({ service, index, isInView, featured }: ServiceCellProps) {
-  const Icon = service.icon;
-
-  return (
-    <motion.article
-      custom={0.08 + index * 0.07}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      variants={fadeUp}
-      className={`group relative flex h-full flex-col justify-between bg-surface p-grid-5 sm:p-grid-6 ${service.span} ${
-        featured ? "min-h-[280px] sm:min-h-[320px] lg:min-h-[360px]" : "min-h-[220px]"
-      }`}
-    >
-      <div className="pointer-events-none absolute right-grid-4 top-grid-4 select-none font-semibold tabular-nums tracking-tighter text-foreground/[0.04] sm:right-grid-5 sm:top-grid-5">
-        <span className={featured ? "text-[5rem] sm:text-[6.5rem] lg:text-[7.5rem]" : "text-[3.5rem] sm:text-[4.5rem]"}>
-          {service.number}
-        </span>
-      </div>
-
-      <div className="relative z-10">
-        <div className="mb-grid-4 flex items-center gap-grid-2">
-          <span className="text-caption font-medium tabular-nums text-accent">{service.number}</span>
-          <span className="h-px flex-1 max-w-[48px] bg-border" />
-          <Icon className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} aria-hidden />
-        </div>
-
-        <h3
-          className={`mb-grid-2 font-semibold tracking-tight text-foreground ${
-            featured
-              ? "text-[1.5rem] leading-[1.15] sm:text-[1.75rem] lg:text-[2rem]"
-              : "text-h3"
-          }`}
-        >
-          {service.title}
-        </h3>
-
-        <p
-          className={`max-w-prose text-muted-foreground ${
-            featured ? "text-body-lg" : "text-body-sm sm:text-body"
-          }`}
-        >
-          {service.tagline}
-        </p>
-      </div>
-
-      <div className="relative z-10 mt-grid-5 flex flex-wrap gap-grid-1.5">
-        {service.capabilities.map((cap) => (
-          <span
-            key={cap}
-            className="rounded-full border border-border-subtle bg-surface-subtle px-grid-2 py-grid-0.5 text-caption text-muted-foreground"
-          >
-            {cap}
-          </span>
-        ))}
-      </div>
-    </motion.article>
-  );
-}
-
 export function Services() {
-  const [sectionRef, isInView] = useInView<HTMLElement>({
-    threshold: 0.08,
-    rootMargin: "-40px",
-    triggerOnce: true,
-  });
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-60px" });
+  const prefersReducedMotion = useReducedMotion();
+  const motionState = prefersReducedMotion || isInView ? "visible" : "hidden";
 
   return (
-    <section id="services" ref={sectionRef} className={`section bg-surface-subtle ${anchor}`}>
-      <div className="container-wide">
-        <div className="mb-grid-10 lg:mb-grid-12">
+    <section
+      id="capabilities"
+      ref={sectionRef}
+      aria-labelledby="capabilities-heading"
+      className={`section section-seam relative overflow-hidden bg-surface-sunken ${anchor}`}
+    >
+      <div className="pointer-events-none absolute inset-0 dot-grid opacity-20" aria-hidden="true" />
+
+      <div className="container-wide relative z-10">
+        <div className="grid grid-cols-1 gap-grid-4 lg:grid-cols-12 lg:items-end lg:gap-grid-8">
           <motion.div
             custom={0}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
+            initial={prefersReducedMotion ? "visible" : "hidden"}
+            animate={motionState}
             variants={fadeUp}
-            className="mb-grid-6 flex items-end justify-between gap-grid-4 border-b border-border pb-grid-6"
+            className="lg:col-span-7"
           >
-            <div className="flex items-end gap-grid-4 sm:gap-grid-6">
-              <span
-                className="font-semibold tabular-nums leading-none tracking-tighter text-foreground/10"
-                aria-hidden
-              >
-                <span className="text-[3.5rem] sm:text-[4.5rem] lg:text-[5.5rem]">02</span>
-              </span>
-              <div>
-                <p className="overline mb-grid-1.5">Capabilities</p>
-                <h2 className="text-[1.75rem] sm:text-h2 lg:text-[2.5rem]">What We Do</h2>
-              </div>
-            </div>
-            <p className="hidden max-w-xs text-right text-body-sm text-muted-foreground lg:block">
-              Five disciplines. One partner for enterprise transformation.
-            </p>
+            <p className="section-tag">Capabilities</p>
+            <h2
+              id="capabilities-heading"
+              className="mt-grid-4 max-w-xl font-display text-h1 font-semibold text-ink"
+            >
+              What we build for enterprise teams.
+            </h2>
           </motion.div>
 
           <motion.p
-            custom={0.05}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
+            custom={prefersReducedMotion ? 0 : 0.08}
+            initial={prefersReducedMotion ? "visible" : "hidden"}
+            animate={motionState}
             variants={fadeUp}
-            className="max-w-content text-body-lg text-muted-foreground lg:hidden"
+            className="max-w-prose text-body text-ink-soft lg:col-span-5 lg:text-right"
           >
-            Comprehensive technology solutions to accelerate digital transformation
-            and drive business innovation.
+            Five practices, one accountable team — scoped to ship and survive
+            the audit.
           </motion.p>
         </div>
 
-        <div className="overflow-hidden rounded-xl border border-border">
-          <div className="grid grid-cols-1 gap-px bg-border md:grid-cols-12 md:grid-rows-2">
-            {services.map((service, index) => (
-              <ServiceCell
-                key={service.title}
-                service={service}
-                index={index}
-                isInView={isInView}
-                featured={index === 0}
-              />
-            ))}
-          </div>
+        {/* asymmetric bento grid */}
+        <div className="mt-grid-8 grid grid-cols-1 gap-grid-3 sm:grid-cols-2 lg:mt-grid-10 lg:grid-cols-3 lg:gap-grid-4">
+          {capabilities.map((cap, i) => (
+            <motion.a
+              key={cap.title}
+              href="#contact"
+              custom={prefersReducedMotion ? 0 : 0.1 + i * 0.06}
+              initial={prefersReducedMotion ? "visible" : "hidden"}
+              animate={motionState}
+              variants={fadeUp}
+              aria-label={`Discuss ${cap.title}`}
+              className={cn(
+                "cap-card group",
+                cap.featured && "cap-card-featured sm:col-span-2 lg:col-span-2"
+              )}
+            >
+              <div className="flex items-start justify-between gap-grid-3">
+                <span
+                  className={cn(
+                    "font-mono text-[0.75rem] tabular-nums tracking-widest",
+                    cap.featured ? "text-accent-deep" : "text-ink-faint"
+                  )}
+                >
+                  {cap.index}
+                </span>
+                <ArrowUpRight
+                  className="h-4 w-4 shrink-0 text-ink-faint transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
+                  aria-hidden="true"
+                />
+              </div>
+
+              <h3
+                className={cn(
+                  "mt-grid-3 font-display text-h3 font-semibold leading-tight tracking-tight transition-colors duration-300",
+                  cap.featured
+                    ? "text-ink"
+                    : "text-ink group-hover:text-accent-deep"
+                )}
+              >
+                {cap.title}
+              </h3>
+
+              <p className="mt-grid-2 flex-1 text-body-sm text-ink-soft">
+                {cap.tagline}
+              </p>
+
+              <span className="mt-grid-4 font-mono text-[0.625rem] uppercase tracking-[0.12em] text-ink-muted">
+                {cap.meta}
+              </span>
+            </motion.a>
+          ))}
         </div>
       </div>
     </section>
