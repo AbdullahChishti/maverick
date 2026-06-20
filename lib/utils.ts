@@ -66,3 +66,24 @@ export const surface = {
 
 /** Anchor scroll offset for fixed nav */
 export const anchor = "anchor-target";
+
+/** Contact conversion — shared across nav, contact, footer */
+export const CONTACT_EMAIL = "contact@mavverik.ai";
+export const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
+export const BRIEF_MAILTO = `mailto:${CONTACT_EMAIL}?subject=Mavverik%20brief&body=Stack%3A%0ATimeline%3A%0ATeam%20size%3A%0A`;
+
+const intentLabels: Record<string, string> = {
+  "ai-systems": "AI & intelligent systems",
+  "cloud-platform": "Cloud & platform engineering",
+  "data-analytics": "Data & analytics",
+  "security-governance": "Security & governance",
+  "delivery-leadership": "Delivery leadership",
+};
+
+export function getContactIntentLabel(
+  searchParams: URLSearchParams
+): string | null {
+  const intent = searchParams.get("intent");
+  if (!intent) return null;
+  return intentLabels[intent] ?? intent.replace(/-/g, " ");
+}

@@ -51,6 +51,7 @@ const config: Config = {
         rule: {
           DEFAULT: "var(--rule)",
           strong: "var(--rule-strong)",
+          slate: "var(--rule-slate)",
         },
         slate: {
           deep: "var(--slate-deep)",
@@ -66,25 +67,97 @@ const config: Config = {
           DEFAULT: "var(--rule)",
           subtle: "var(--rule)",
         },
+        hero: {
+          DEFAULT: "var(--hero-bg)",
+          raised: "var(--hero-bg-raised)",
+          text: "var(--hero-text)",
+          "text-soft": "var(--hero-text-soft)",
+          "text-muted": "var(--hero-text-muted)",
+          wave: "var(--hero-accent-wave)",
+          "wave-teal": "var(--hero-wave-teal)",
+          "wave-blue": "var(--hero-wave-blue)",
+        },
+        "nav-hero": {
+          fg: "var(--nav-hero-fg)",
+          "fg-muted": "var(--nav-hero-fg-muted)",
+          "fg-active": "var(--nav-hero-fg-active)",
+          underline: "var(--nav-hero-underline)",
+          category: "var(--nav-hero-category)",
+        },
+        editorial: {
+          DEFAULT: "var(--editorial-surface)",
+          raised: "var(--editorial-surface-raised)",
+          ink: "var(--editorial-ink)",
+        },
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "system-ui", "-apple-system", "sans-serif"],
-        display: ["var(--font-display)", "system-ui", "sans-serif"],
-        mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
+        sans: [
+          "var(--font-sans)",
+          "IBM Plex Sans",
+          "system-ui",
+          "-apple-system",
+          "sans-serif",
+        ],
+        display: [
+          "var(--font-display)",
+          "IBM Plex Serif",
+          "Georgia",
+          "Times New Roman",
+          "serif",
+        ],
+        mono: [
+          "var(--font-mono)",
+          "IBM Plex Mono",
+          "ui-monospace",
+          "SFMono-Regular",
+          "monospace",
+        ],
       },
       fontSize: {
-        mono: ["0.75rem", { lineHeight: "1.5", letterSpacing: "0.14em" }],
-        "mono-sm": ["0.6875rem", { lineHeight: "1.5", letterSpacing: "0.18em" }],
-        caption: ["0.8125rem", { lineHeight: "1.5" }],
-        "body-sm": ["0.9375rem", { lineHeight: "1.6" }],
-        body: ["1.0625rem", { lineHeight: "1.65" }],
-        "body-lg": ["1.1875rem", { lineHeight: "1.58" }],
-        h4: ["1.25rem", { lineHeight: "1.35", letterSpacing: "-0.02em" }],
-        h3: ["1.5rem", { lineHeight: "1.28", letterSpacing: "-0.025em" }],
-        h2: ["clamp(2rem, 4vw, 3.25rem)", { lineHeight: "1.06", letterSpacing: "-0.03em" }],
-        h1: ["clamp(2.5rem, 5vw, 4.25rem)", { lineHeight: "1.02", letterSpacing: "-0.035em" }],
-        display: ["clamp(3rem, 7vw, 5.5rem)", { lineHeight: "0.98", letterSpacing: "-0.04em" }],
-        "display-xl": ["clamp(3.25rem, 10vw, 7.5rem)", { lineHeight: "0.94", letterSpacing: "-0.045em" }],
+        /* Mono — two sizes: labels (11px) + UI chrome (12px) */
+        "mono-sm": ["0.6875rem", { lineHeight: "1.45", letterSpacing: "0.12em" }],
+        mono: ["0.75rem", { lineHeight: "1.5", letterSpacing: "0.1em" }],
+        /* Body copy */
+        caption: ["0.8125rem", { lineHeight: "1.55", letterSpacing: "0.01em" }],
+        "body-sm": ["0.875rem", { lineHeight: "1.6" }],
+        body: ["1rem", { lineHeight: "1.65", letterSpacing: "0.005em" }],
+        "body-lg": ["1.125rem", { lineHeight: "1.6", letterSpacing: "0.002em" }],
+        /* Type ramp — display → h2 sections → h3/h4 cards → body */
+        h4: ["1.125rem", { lineHeight: "1.4", letterSpacing: "-0.01em" }],
+        h3: ["1.375rem", { lineHeight: "1.35", letterSpacing: "-0.015em" }],
+        h2: [
+          "clamp(1.875rem, 3.25vw, 2.75rem)",
+          { lineHeight: "1.12", letterSpacing: "-0.02em" },
+        ],
+        h1: [
+          "clamp(2.25rem, 4.5vw, 3.5rem)",
+          { lineHeight: "1.08", letterSpacing: "-0.02em" },
+        ],
+        brand: ["1.25rem", { lineHeight: "1.3", letterSpacing: "-0.01em" }],
+        /* Hero display — serif, restrained scale */
+        display: [
+          "clamp(2.75rem, 5.5vw, 4.75rem)",
+          { lineHeight: "1.04", letterSpacing: "-0.025em" },
+        ],
+        "display-sm": [
+          "clamp(1.75rem, 4.5vw, 3rem)",
+          { lineHeight: "1.08", letterSpacing: "-0.02em" },
+        ],
+        "display-xl": [
+          "clamp(3rem, 7vw, 6rem)",
+          { lineHeight: "1", letterSpacing: "-0.03em" },
+        ],
+        "hero-display": [
+          "var(--hero-display-size)",
+          {
+            lineHeight: "var(--hero-display-leading)",
+            letterSpacing: "var(--hero-display-tracking)",
+          },
+        ],
+      },
+      minHeight: {
+        hero: "max(var(--hero-min-h), 100dvh)",
+        "hero-safe": "max(var(--hero-min-h), 100dvh, 100svh)",
       },
       maxWidth: {
         prose: "38rem",

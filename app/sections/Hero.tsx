@@ -1,174 +1,60 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { SignalGraph } from "../components/SignalGraph";
-import { anchor } from "@/lib/utils";
-
-const ease = [0.16, 1, 0.3, 1] as const;
+import { motion } from "framer-motion";
+import { HeroVideoBackground } from "../components/HeroVideoBackground";
+import { anchor, BRIEF_MAILTO } from "@/lib/utils";
 
 export function Hero() {
-  const prefersReducedMotion = useReducedMotion();
-
-  const reveal = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 24 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: prefersReducedMotion ? 0 : 0.65,
-        delay: prefersReducedMotion ? 0 : 0.08 + i * 0.1,
-        ease,
-      },
-    }),
-  };
-
   return (
     <section
       id="hero"
-      aria-labelledby="hero-heading"
-      className={`relative flex min-h-[100dvh] flex-col overflow-hidden bg-surface ${anchor}`}
+      className={`relative min-h-[100dvh] bg-black ${anchor}`}
     >
-      {/* backdrop */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="dot-grid dot-grid-fade absolute inset-0 opacity-35" />
-        <div
-          className="absolute -right-[5%] top-[5%] h-[50vh] w-[50vw] max-w-2xl rounded-full opacity-70 blur-[100px]"
-          style={{ background: "var(--accent-glow)" }}
-        />
-        <div className="absolute inset-x-0 bottom-0 h-px bg-rule" />
-      </div>
+      <HeroVideoBackground />
 
-      <div className="container-wide relative z-10 flex flex-1 flex-col pt-[var(--nav-h)]">
-        <div className="grid flex-1 grid-cols-1 items-center gap-grid-6 py-grid-8 sm:gap-grid-8 sm:py-grid-10 lg:grid-cols-12 lg:gap-grid-6 lg:py-grid-16">
-          {/* copy column — asymmetric left weight */}
-          <div className="lg:col-span-7 xl:col-span-6">
-            <motion.p
-              custom={0}
-              initial="hidden"
-              animate="visible"
-              variants={reveal}
-              className="section-tag"
-            >
-              Mavverik
-            </motion.p>
+      {/* Overlay */}
+      <div className="absolute inset-0 z-[1] bg-black/50" />
 
-            <h1
-              id="hero-heading"
-              className="mt-grid-4 font-display text-display-xl font-semibold text-ink"
-            >
-              {["Production AI", "the regulators", "sign off on."].map(
-                (line, i) => (
-                  <span key={line} className="block overflow-hidden">
-                    <motion.span
-                      custom={i + 1}
-                      initial="hidden"
-                      animate="visible"
-                      variants={reveal}
-                      className={`block ${i === 2 ? "text-accent-deep" : ""}`}
-                    >
-                      {line}
-                    </motion.span>
-                  </span>
-                )
-              )}
-            </h1>
-
-            {/* journey pipeline */}
-            <motion.div
-              custom={4}
-              initial="hidden"
-              animate="visible"
-              variants={reveal}
-              className="mt-grid-8 max-w-xl"
-            >
-              <p className="text-body text-ink-soft sm:text-body-lg">
-                One senior team, accountable from architecture review to
-                production.
-              </p>
-              <div className="mt-grid-4 flex flex-col gap-grid-2 sm:flex-row sm:items-stretch">
-                <div className="journey-node flex-1">
-                  <span className="mono-label">Start</span>
-                  <span className="font-display text-h4 font-semibold text-ink">
-                    first architecture review
-                  </span>
-                </div>
-
-                <div
-                  className="hidden shrink-0 items-center justify-center px-grid-2 text-accent sm:flex"
-                  aria-hidden="true"
-                >
-                  <ArrowRight className="h-4 w-4" strokeWidth={2} />
-                </div>
-
-                <div className="journey-node journey-node-active flex-1">
-                  <span className="mono-label text-accent-deep">Live</span>
-                  <span className="font-display text-h4 font-semibold text-ink">
-                    governed systems in production
-                  </span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* CTAs */}
-            <motion.div
-              custom={5}
-              initial="hidden"
-              animate="visible"
-              variants={reveal}
-              className="mt-grid-8 flex flex-col gap-grid-2 sm:flex-row sm:items-center"
-            >
-              <a href="#contact" className="btn-primary group">
-                Start a brief
-                <ArrowRight
-                  className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
-                  aria-hidden="true"
-                />
-              </a>
-              <a href="#founders" className="btn-secondary">
-                Meet the team
-              </a>
-            </motion.div>
-          </div>
-
-          {/* signal visualization */}
-          <motion.div
-            custom={6}
-            initial="hidden"
-            animate="visible"
-            variants={reveal}
-            className="flex items-center justify-center lg:col-span-5 lg:col-start-8 xl:col-span-6 xl:col-start-7"
+      <div className="container-wide relative z-10 flex min-h-[100dvh] items-center">
+        <div className="w-full py-32 lg:py-0">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+            className="text-sm font-medium text-white/60"
           >
-            <SignalGraph className="mx-auto w-full max-w-[280px] sm:max-w-sm lg:max-w-md" />
-          </motion.div>
+            Enterprise AI
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.1 }}
+            className="mt-4 max-w-4xl text-[clamp(3rem,10vw,8rem)] font-medium leading-[0.9] tracking-[-0.04em] text-white"
+          >
+            AI that ships.
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            className="mt-8 max-w-md text-xl text-white/60"
+          >
+            Production-ready systems for regulated industries.
+          </motion.p>
+
+          <motion.a
+            href={BRIEF_MAILTO}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.5 }}
+            className="mt-12 inline-block border-b-2 border-white pb-1 text-lg font-medium text-white transition-opacity hover:opacity-70"
+          >
+            Get in touch
+          </motion.a>
         </div>
       </div>
-
-      {/* status strip */}
-      <motion.div
-        custom={7}
-        initial="hidden"
-        animate="visible"
-        variants={reveal}
-        className="relative z-10 border-t border-rule bg-surface-raised"
-        aria-hidden="true"
-      >
-        <div className="container-wide flex flex-wrap items-center justify-center gap-x-grid-6 gap-y-grid-2 py-grid-3 sm:justify-between">
-          {[
-            "Governed by design",
-            "Regulatory scrutiny ready",
-            "Architecture → production",
-          ].map((item) => (
-            <span
-              key={item}
-              className="flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-ink-muted"
-            >
-              <span className="h-1 w-1 rounded-full bg-accent-bright" />
-              {item}
-            </span>
-          ))}
-        </div>
-      </motion.div>
     </section>
   );
 }

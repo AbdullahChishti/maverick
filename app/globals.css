@@ -13,9 +13,11 @@
   --ink: #1a2332;
   --ink-soft: #4a5568;
   --ink-muted: #64748b;
-  --ink-faint: #94a3b8;
+  --ink-faint: #7b8da3;
 
-  /* ── Electric signal accent — regulatory "go" teal ────────── */
+  /* ── Electric signal accent — regulatory "go" teal ──────────
+     Usage: --accent = decorative only (dots, glows, borders).
+     --accent-deep = minimum for text and interactive fills on light surfaces. */
   --accent: #00a88e;
   --accent-deep: #007a68;
   --accent-bright: #00d4b8;
@@ -32,7 +34,7 @@
   --slate-raised: #334155;
   --on-slate: #f1f5f9;
   --on-slate-soft: #94a3b8;
-  --on-slate-muted: #64748b;
+  --on-slate-muted: #8b9cb3;
   --rule-slate: #3d4f66;
 
   /* ── Shadows ──────────────────────────────────────────────── */
@@ -40,6 +42,46 @@
   --shadow-sm: 0 2px 8px rgba(26, 35, 50, 0.06);
   --shadow-md: 0 8px 24px -8px rgba(26, 35, 50, 0.12);
   --shadow-signal: 0 0 0 1px var(--rule), 0 12px 40px -16px rgba(0, 168, 142, 0.15);
+
+  /* ── Typography — IBM Plex hierarchy ────────────────────────
+     Ramp: display → h2 sections → h3/h4 cards → body */
+  --font-sans-fallback: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --font-display-fallback: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --font-mono-fallback: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --type-display-tracking: -0.02em;
+  --type-heading-tracking: -0.015em;
+  --type-label-tracking: 0.12em;
+  --type-label-size: 0.6875rem; /* mono-sm — 11px labels */
+  --type-ui-size: 0.75rem; /* mono — 12px UI chrome, buttons */
+
+  /* ── Hero — QuantumBlack immersive dark ───────────────────── */
+  --hero-bg: #0a0f1a;
+  --hero-bg-raised: #0d1526;
+  --hero-text: #ffffff;
+  --hero-text-soft: color-mix(in srgb, #ffffff 74%, transparent);
+  --hero-text-muted: color-mix(in srgb, #ffffff 54%, transparent);
+  --hero-wave-teal: #0d3d4a;
+  --hero-wave-blue: #142a45;
+  --hero-accent-wave: color-mix(in srgb, var(--accent) 38%, var(--hero-wave-teal));
+  --hero-glow: color-mix(in srgb, var(--accent) 24%, transparent);
+  --hero-min-h: 85vh;
+  --hero-display-size: clamp(2.75rem, 6.25vw, 5.75rem);
+  --hero-display-leading: 1.02;
+  --hero-display-tracking: -0.03em;
+
+  /* ── Nav — transparent over hero ──────────────────────────── */
+  --nav-hero-bg: transparent;
+  --nav-hero-fg: var(--hero-text);
+  --nav-hero-fg-muted: var(--hero-text-muted);
+  --nav-hero-fg-active: var(--hero-text);
+  --nav-hero-underline: var(--hero-text);
+  --nav-hero-border: color-mix(in srgb, var(--hero-text) 12%, transparent);
+
+  /* ── Editorial body — light sections after dark band ──────── */
+  --editorial-surface: #f5f7fa;
+  --editorial-surface-raised: #ffffff;
+  --editorial-ink: #1a2332;
 
   /* ── Layout rhythm ────────────────────────────────────────── */
   --section-y: 80px;
@@ -76,7 +118,8 @@
   body {
     background: var(--surface);
     color: var(--ink);
-    font-feature-settings: "ss01", "cv01";
+    font-family: var(--font-sans), var(--font-sans-fallback);
+    font-feature-settings: "kern", "liga", "calt";
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
     -webkit-tap-highlight-color: transparent;
@@ -87,10 +130,16 @@
   h3,
   h4 {
     color: var(--ink);
-    font-family: var(--font-display), system-ui, sans-serif;
-    font-weight: 600;
-    letter-spacing: -0.03em;
+    font-family: var(--font-display), var(--font-display-fallback);
+    font-weight: 500;
+    letter-spacing: var(--type-heading-tracking);
     text-wrap: balance;
+  }
+
+  h1,
+  h2 {
+    font-weight: 600;
+    letter-spacing: var(--type-display-tracking);
   }
 
   h1 {
@@ -115,7 +164,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--accent-deep);
     outline-offset: 3px;
     border-radius: 4px;
   }
@@ -146,17 +195,24 @@
   }
 
   .mono-label {
-    @apply font-mono uppercase;
-    font-size: 0.6875rem;
-    letter-spacing: 0.18em;
-    color: var(--ink-muted);
+    @apply font-mono text-mono-sm uppercase text-ink-muted;
   }
 
   .section-tag {
-    @apply inline-flex items-center gap-2 font-mono uppercase;
-    font-size: 0.6875rem;
-    letter-spacing: 0.2em;
+    @apply inline-flex items-center gap-2 font-mono text-mono-sm uppercase;
     color: var(--accent-deep);
+  }
+
+  .section-heading {
+    @apply font-display text-h2 font-semibold text-ink;
+  }
+
+  .finale-heading {
+    @apply font-display text-h1 font-semibold text-ink;
+  }
+
+  .registry-title {
+    @apply font-sans text-h4 font-semibold text-ink;
   }
 
   .section-tag::before {
@@ -204,7 +260,7 @@
 
   /* ── Buttons — sharp Swiss rectangles ─────────────────────── */
   .btn-primary {
-    @apply inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-md bg-accent-deep px-6 font-mono text-[0.72rem] font-medium uppercase tracking-[0.14em] text-white;
+    @apply inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-md bg-accent-deep px-6 font-mono text-mono font-medium uppercase text-white;
     box-shadow: var(--shadow-sm);
     transition:
       background-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
@@ -218,7 +274,7 @@
   }
 
   .btn-secondary {
-    @apply inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-md border px-6 font-mono text-[0.72rem] font-medium uppercase tracking-[0.14em] text-ink;
+    @apply inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-md border px-6 font-mono text-mono font-medium uppercase text-ink;
     border-color: var(--rule-strong);
     background: var(--surface-raised);
     transition:
@@ -230,19 +286,332 @@
     background: var(--surface);
   }
 
-  /* ── Nav ──────────────────────────────────────────────────── */
+  /* ── Nav — QuantumBlack-inspired chrome ───────────────────── */
   .nav-surface {
-    backdrop-filter: blur(16px) saturate(1.4);
-    -webkit-backdrop-filter: blur(16px) saturate(1.4);
-    background: color-mix(in srgb, var(--surface-raised) 72%, transparent);
     border-bottom: 1px solid transparent;
     transition:
       background-color 320ms cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 320ms cubic-bezier(0.16, 1, 0.3, 1);
+      border-color 320ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 320ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .nav-surface-scrolled {
+
+  .nav-surface-overlay,
+  .nav-surface:not(.nav-surface-scrolled) {
+    background: var(--nav-hero-bg);
+    border-bottom-color: var(--nav-hero-border);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .nav-surface-overlay .text-ink,
+  .nav-surface:not(.nav-surface-scrolled) .text-ink {
+    color: var(--nav-hero-fg);
+  }
+
+  .nav-surface-overlay .text-ink-muted,
+  .nav-surface:not(.nav-surface-scrolled) .text-ink-muted {
+    color: var(--nav-hero-fg-muted);
+  }
+
+  .nav-surface-overlay .text-ink-muted:hover,
+  .nav-surface-overlay .hover\:text-ink:hover,
+  .nav-surface:not(.nav-surface-scrolled) .text-ink-muted:hover,
+  .nav-surface:not(.nav-surface-scrolled) .hover\:text-ink:hover {
+    color: var(--nav-hero-fg-active);
+  }
+
+  .nav-surface-overlay .hover\:text-accent-deep:hover,
+  .nav-surface:not(.nav-surface-scrolled) .hover\:text-accent-deep:hover {
+    color: var(--accent-bright);
+  }
+
+  .nav-surface-overlay a[aria-current="location"],
+  .nav-surface:not(.nav-surface-scrolled) a[aria-current="location"] {
+    color: var(--nav-hero-fg-active);
+  }
+
+  .nav-surface-scrolled,
+  .nav-surface-light {
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
     background: color-mix(in srgb, var(--surface-raised) 94%, transparent);
     border-bottom-color: var(--rule);
+  }
+
+  .nav-surface-dark {
+    backdrop-filter: blur(16px) saturate(1.2);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
+    background: color-mix(in srgb, var(--slate-deep) 90%, transparent);
+    border-bottom-color: var(--rule-slate);
+  }
+
+  .nav-link {
+    @apply relative inline-flex min-h-[44px] items-center px-0.5 font-sans text-body-sm font-medium transition-colors duration-200;
+  }
+
+  .nav-link-active::after {
+    content: "";
+    @apply absolute inset-x-0 -bottom-px h-px;
+    background: currentColor;
+  }
+
+  .nav-cta-link {
+    @apply inline-flex min-h-[44px] items-center font-sans text-body-sm font-medium transition-colors duration-200;
+  }
+
+  .nav-drawer-backdrop {
+    background: color-mix(in srgb, var(--slate-deep) 55%, transparent);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  @keyframes hero-wave-drift-a {
+    0%,
+    100% {
+      transform: translateX(0) translateY(0);
+    }
+    50% {
+      transform: translateX(-1.5%) translateY(-0.75%);
+    }
+  }
+
+  @keyframes hero-wave-drift-b {
+    0%,
+    100% {
+      transform: translateX(0) translateY(0);
+    }
+    50% {
+      transform: translateX(1.25%) translateY(0.5%);
+    }
+  }
+
+  .hero-wave-drift-a {
+    animation: hero-wave-drift-a 22s ease-in-out infinite;
+  }
+
+  .hero-wave-drift-b {
+    animation: hero-wave-drift-b 28s ease-in-out infinite;
+  }
+
+  /* ── Hero — full-bleed video, bottom-left copy (#hero) ───── */
+  #hero {
+    --hero-display-size: clamp(3rem, 7.25vw, 6.25rem);
+    background: var(--hero-bg);
+    color: var(--hero-text);
+    min-height: max(var(--hero-min-h), 100dvh);
+  }
+
+  #hero.hero-has-video {
+    min-height: max(var(--hero-min-h), 100dvh);
+  }
+
+  .hero-video-bg {
+    --hero-media-zoom: 1.28;
+  }
+
+  .hero-video-bg .hero-video,
+  .hero-video-bg .signal-graph-fallback {
+    transform: scale(var(--hero-media-zoom));
+    transform-origin: center center;
+  }
+
+  .hero-video-bg .hero-video {
+    object-position: center center;
+  }
+
+  /* z-1 — bottom gradient only, max 40% height, for text legibility */
+  #hero::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 40%;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      color-mix(in srgb, var(--hero-bg) 28%, transparent) 45%,
+      color-mix(in srgb, var(--hero-bg) 68%, transparent) 100%
+    );
+    z-index: 1;
+  }
+
+  /* ── Hero kicker — mono category label ───────────────────── */
+  .hero-kicker {
+    font-family: var(--font-mono), var(--font-mono-fallback);
+    font-size: var(--type-label-size);
+    letter-spacing: var(--type-label-tracking);
+    text-transform: uppercase;
+    color: var(--hero-text-muted);
+  }
+
+  /* ── Hero subhead — supporting sentence ─────────────────── */
+  .hero-subhead {
+    font-family: var(--font-sans), var(--font-sans-fallback);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.55;
+    color: var(--hero-text-soft);
+    max-width: 36rem;
+    text-shadow: 0 1px 16px color-mix(in srgb, var(--hero-bg) 50%, transparent);
+  }
+
+  /* ── Hero accent line — second headline line ────────────── */
+  #hero h1 .hero-line-accent {
+    color: var(--hero-text-soft);
+  }
+
+  /* ── Hero CTA text link (legacy) ────────────────────────── */
+  .hero-cta {
+    @apply inline-flex min-h-[44px] items-center gap-2 font-sans text-body font-medium transition-colors duration-200;
+    color: var(--hero-text);
+  }
+
+  .hero-cta:hover {
+    color: color-mix(in srgb, var(--hero-text) 82%, transparent);
+  }
+
+  .hero-cta svg {
+    transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-cta:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* ── Hero CTA button — elevated primary action ──────────── */
+  .hero-cta-btn {
+    @apply inline-flex min-h-[48px] items-center gap-3 rounded-md px-6 font-mono text-mono font-medium uppercase;
+    background: color-mix(in srgb, var(--hero-text) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--hero-text) 20%, transparent);
+    color: var(--hero-text);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition:
+      background-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-cta-btn:hover {
+    background: color-mix(in srgb, var(--hero-text) 18%, transparent);
+    border-color: color-mix(in srgb, var(--hero-text) 32%, transparent);
+    transform: translateY(-1px);
+  }
+
+  .hero-cta-btn svg {
+    transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-cta-btn:hover svg {
+    transform: translateX(3px);
+  }
+
+  #hero > .hero-video-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  #hero > .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  #hero h1,
+  #hero .text-display {
+    color: var(--hero-text);
+    font-size: var(--hero-display-size);
+    line-height: var(--hero-display-leading);
+    letter-spacing: var(--hero-display-tracking);
+  }
+
+  @media (max-width: 639px) {
+    #hero {
+      --hero-display-size: clamp(2.5rem, 9vw, 3.25rem);
+    }
+  }
+
+  #hero .text-ink {
+    color: var(--hero-text);
+  }
+
+  #hero .text-ink-soft {
+    color: var(--hero-text-soft);
+  }
+
+  #hero .text-accent-deep {
+    color: var(--accent-bright);
+  }
+
+  #hero .section-tag {
+    color: var(--accent-bright);
+  }
+
+  #hero .section-tag::before {
+    background: var(--accent-bright);
+    box-shadow: 0 0 8px var(--hero-glow);
+  }
+
+  #hero .bg-rule {
+    background-color: var(--nav-hero-border);
+  }
+
+  #hero .dot-grid {
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--hero-text) 7%, transparent) 1px,
+      transparent 1px
+    );
+  }
+
+  #hero a:not(.btn-primary):not(.hero-cta):hover {
+    color: var(--accent-bright);
+  }
+
+  .hero-bleed {
+    min-height: max(var(--hero-min-h), 100dvh);
+  }
+
+  .hero-surface {
+    background: var(--hero-bg);
+    color: var(--hero-text);
+  }
+
+  .hero-surface-raised {
+    background: var(--hero-bg-raised);
+  }
+
+  .dot-grid-hero {
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--hero-text) 7%, transparent) 1px,
+      transparent 1px
+    );
+    background-size: 24px 24px;
+  }
+
+  .hero-wave-accent {
+    background:
+      radial-gradient(
+        ellipse 90% 55% at 72% 108%,
+        color-mix(in srgb, var(--hero-accent-wave) 55%, transparent),
+        transparent 68%
+      ),
+      radial-gradient(
+        ellipse 70% 45% at 18% 92%,
+        color-mix(in srgb, var(--hero-wave-blue) 70%, transparent),
+        transparent 62%
+      );
+  }
+
+  /* Editorial body — light capabilities / contact after dark band */
+  .editorial-body {
+    background: var(--editorial-surface);
+    color: var(--editorial-ink);
+  }
+
+  .editorial-body-raised {
+    background: var(--editorial-surface-raised);
   }
 
   /* ── Capability bento cards ───────────────────────────────── */
@@ -308,6 +677,12 @@
 }
 
 @layer utilities {
+  .min-h-hero {
+    min-height: max(var(--hero-min-h), 100dvh);
+  }
+  .min-h-hero-safe {
+    min-height: max(var(--hero-min-h), 100dvh, 100svh);
+  }
   .text-balance {
     text-wrap: balance;
   }
@@ -332,7 +707,9 @@
     scroll-behavior: auto !important;
   }
   .signal-pulse,
-  .signal-drift {
+  .signal-drift,
+  .hero-wave-drift-a,
+  .hero-wave-drift-b {
     animation: none !important;
   }
 }
