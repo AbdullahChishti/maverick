@@ -43,15 +43,24 @@ export function Founders() {
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex flex-col justify-center gap-4"
+            className="flex items-center justify-center gap-3 lg:gap-6"
           >
-            {companies.map((company) => (
-              <p
-                key={company}
-                className="text-[clamp(2rem,5vw,4rem)] font-medium leading-[1] tracking-[-0.03em] text-neutral-900"
-              >
-                {company}
-              </p>
+            {companies.map((company, i) => (
+              <div key={company} className="flex items-center gap-3 lg:gap-6">
+                <p className="text-[clamp(1.5rem,4vw,3.5rem)] font-medium leading-[1] tracking-[-0.03em] text-neutral-900">
+                  {company}
+                </p>
+                {i < companies.length - 1 && (
+                  <motion.span
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ duration: 0.4, delay: 0.4 + i * 0.1 }}
+                    className="text-[clamp(1.5rem,4vw,3.5rem)] font-light text-neutral-300"
+                  >
+                    /
+                  </motion.span>
+                )}
+              </div>
             ))}
           </motion.div>
         </div>
