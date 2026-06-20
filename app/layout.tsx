@@ -28,7 +28,7 @@ const metaDescription =
   "One senior team accountable from architecture review to governed production AI in regulated enterprises.";
 
 export const metadata: Metadata = {
-  title: "Mavverik — Production AI the regulators sign off on",
+  title: "Mavverik",
   description: metaDescription,
   keywords: [
     "AI-native consulting",
@@ -41,14 +41,14 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Mavverik" }],
   openGraph: {
-    title: "Mavverik — Production AI the regulators sign off on",
+    title: "Mavverik",
     description: brandTagline,
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mavverik — Production AI the regulators sign off on",
+    title: "Mavverik",
     description: brandTagline,
   },
   robots: {
