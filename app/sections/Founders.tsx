@@ -4,55 +4,80 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { anchor } from "@/lib/utils";
 
+const metrics = [
+  { value: "$200M+", label: "AI systems deployed" },
+  { value: "57", label: "Enterprise clients" },
+  { value: "12", label: "Weeks to production" },
+];
+
+const clients = ["JPMorgan", "Barclays", "Siemens", "Audi", "myToys", "Navan"];
+
 export function Founders() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-20%" });
+  const isInView = useInView(ref, { once: true, margin: "-15%" });
 
   return (
     <section
       id="founders"
       ref={ref}
-      className={`flex min-h-[70vh] items-center bg-white ${anchor}`}
+      className={`relative bg-white ${anchor}`}
     >
-      <div className="container-wide py-24">
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-[clamp(1.5rem,4vw,2.5rem)] font-normal leading-[1.3] tracking-[-0.02em] text-neutral-400"
-        >
-          Founded by engineers from
-        </motion.p>
+      {/* Dot grid backdrop */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-40"
+        style={{
+          backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(0,0,0,0.07) 1px, transparent 0)',
+          backgroundSize: '24px 24px',
+        }}
+      />
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="mt-2 text-[clamp(2rem,6vw,5rem)] font-medium leading-[1.1] tracking-[-0.03em]"
-        >
-          <span className="font-sans font-semibold text-neutral-900">Microsoft</span>
-          <span className="text-neutral-400">, </span>
-          <span className="font-sans font-semibold text-neutral-900">OpenAI</span>
-          <span className="text-neutral-400"> & </span>
-          <span className="font-sans font-medium">
-            <span style={{ color: "#4285F4" }}>G</span>
-            <span style={{ color: "#EA4335" }}>o</span>
-            <span style={{ color: "#FBBC05" }}>o</span>
-            <span style={{ color: "#4285F4" }}>g</span>
-            <span style={{ color: "#34A853" }}>l</span>
-            <span style={{ color: "#EA4335" }}>e</span>
-          </span>
-          <span className="text-neutral-400">.</span>
-        </motion.p>
+      <div className="container-wide relative py-24 lg:py-40">
+        {/* Metrics row */}
+        <div className="grid gap-12 border-b border-black/10 pb-16 sm:grid-cols-3 lg:gap-8 lg:pb-24">
+          {metrics.map((metric, i) => (
+            <motion.div
+              key={metric.label}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="relative"
+            >
+              {/* Accent bar */}
+              <div className="absolute -left-4 top-0 hidden h-full w-0.5 bg-gradient-to-b from-emerald-500 to-transparent opacity-50 lg:block" />
+              <p className="text-[clamp(3.5rem,10vw,7rem)] font-semibold leading-none tracking-[-0.05em] text-black">
+                {metric.value}
+              </p>
+              <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.3em] text-black/40">
+                {metric.label}
+              </p>
+            </motion.div>
+          ))}
+        </div>
 
-        <motion.p
+        {/* Clients */}
+        <motion.div
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-12 text-[clamp(1rem,2vw,1.25rem)] font-normal leading-[1.5] text-neutral-400"
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="pt-16 lg:pt-24"
         >
-          Trusted by JPMorgan, Barclays, Siemens, Audi, and others.
-        </motion.p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-black/40">
+            Trusted by
+          </p>
+          <div className="mt-10 flex flex-wrap gap-x-16 gap-y-6">
+            {clients.map((client, i) => (
+              <motion.span
+                key={client}
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ duration: 0.4, delay: 0.6 + i * 0.05 }}
+                className="text-[clamp(1.25rem,3vw,2rem)] font-medium tracking-[-0.02em] text-black/15 transition-colors duration-300 hover:text-black"
+              >
+                {client}
+              </motion.span>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

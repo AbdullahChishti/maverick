@@ -2,12 +2,11 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
 import { BRIEF_MAILTO } from "@/lib/utils";
 
 const links = [
-  { href: "#founders", label: "Team" },
-  { href: "#services", label: "Services" },
+  { href: "#founders", label: "Results" },
+  { href: "#services", label: "Capabilities" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -16,20 +15,20 @@ export function Navigation() {
   const [dark, setDark] = useState(true);
 
   const update = useCallback(() => {
-    const hero = document.getElementById("hero");
-    const services = document.getElementById("services");
-    const contact = document.getElementById("contact");
+    const sections = ["hero", "services"];
+    let inDark = false;
 
-    const heroBottom = hero?.getBoundingClientRect().bottom ?? 0;
-    const servicesTop = services?.getBoundingClientRect().top ?? Infinity;
-    const servicesBottom = services?.getBoundingClientRect().bottom ?? 0;
-    const contactTop = contact?.getBoundingClientRect().top ?? Infinity;
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= 60 && rect.bottom > 60) {
+          inDark = true;
+        }
+      }
+    });
 
-    const inHero = heroBottom > 60;
-    const inServices = servicesTop <= 60 && servicesBottom > 60;
-    const inContact = contactTop <= 60;
-
-    setDark(inHero || inServices || inContact);
+    setDark(inDark);
   }, []);
 
   useEffect(() => {
@@ -51,7 +50,9 @@ export function Navigation() {
           <a
             href="#hero"
             onClick={(e) => handleClick(e, "#hero")}
-            className={`text-lg font-medium ${dark ? "text-white" : "text-neutral-900"}`}
+            className={`text-lg font-medium tracking-[-0.02em] transition-colors duration-300 ${
+              dark ? "text-white" : "text-black"
+            }`}
           >
             Mavverik
           </a>
@@ -62,24 +63,39 @@ export function Navigation() {
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleClick(e, link.href)}
-                className={`text-sm ${dark ? "text-white/60 hover:text-white" : "text-neutral-500 hover:text-neutral-900"}`}
+                className={`font-mono text-[11px] uppercase tracking-[0.2em] transition-colors duration-300 ${
+                  dark
+                    ? "text-white/50 hover:text-white"
+                    : "text-black/50 hover:text-black"
+                }`}
               >
                 {link.label}
               </a>
             ))}
             <a
               href={BRIEF_MAILTO}
-              className={`text-sm font-medium ${dark ? "text-white" : "text-neutral-900"}`}
+              className={`flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] transition-colors duration-300 ${
+                dark
+                  ? "text-emerald-400 hover:text-emerald-300"
+                  : "text-emerald-600 hover:text-emerald-500"
+              }`}
             >
-              Get in touch
+              <span className="h-1.5 w-1.5 rounded-full bg-current" />
+              Start Project
             </a>
           </div>
 
           <button
             onClick={() => setOpen(true)}
-            className={`lg:hidden ${dark ? "text-white" : "text-neutral-900"}`}
+            className={`flex h-12 w-12 items-center justify-center lg:hidden ${
+              dark ? "text-white" : "text-black"
+            }`}
+            aria-label="Open menu"
           >
-            <Menu className="h-6 w-6" />
+            <div className="space-y-1.5">
+              <div className="h-0.5 w-6 bg-current" />
+              <div className="h-0.5 w-4 bg-current" />
+            </div>
           </button>
         </nav>
       </header>
@@ -90,28 +106,46 @@ export function Navigation() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             className="fixed inset-0 z-50 bg-black lg:hidden"
           >
             <div className="container-wide flex h-20 items-center justify-between">
-              <span className="text-lg font-medium text-white">Mavverik</span>
-              <button onClick={() => setOpen(false)} className="text-white">
-                <X className="h-6 w-6" />
+              <span className="text-lg font-medium tracking-[-0.02em] text-white">
+                Mavverik
+              </span>
+              <button
+                onClick={() => setOpen(false)}
+                className="flex h-12 w-12 items-center justify-center text-white"
+                aria-label="Close menu"
+              >
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
             </div>
-            <nav className="container-wide flex flex-col gap-6 pt-12">
-              {links.map((link) => (
-                <a
+            <nav className="container-wide flex flex-col gap-8 pt-16">
+              {links.map((link, i) => (
+                <motion.a
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleClick(e, link.href)}
-                  className="text-3xl font-medium text-white"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: i * 0.1 }}
+                  className="text-4xl font-medium tracking-[-0.02em] text-white"
                 >
                   {link.label}
-                </a>
+                </motion.a>
               ))}
-              <a href={BRIEF_MAILTO} className="mt-8 text-lg text-white/60">
-                {BRIEF_MAILTO.replace("mailto:", "")}
-              </a>
+              <motion.a
+                href={BRIEF_MAILTO}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.4 }}
+                className="mt-8 text-lg text-emerald-400"
+              >
+                Start a project →
+              </motion.a>
             </nav>
           </motion.div>
         )}
