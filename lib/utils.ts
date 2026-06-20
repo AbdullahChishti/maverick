@@ -68,7 +68,7 @@ export const surface = {
 export const anchor = "anchor-target";
 
 /** Contact conversion — shared across nav, contact, footer */
-export const CONTACT_EMAIL = "contact@mavverik.ai";
+export const CONTACT_EMAIL = "contact@mavverik.com";
 export const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
 export const BRIEF_MAILTO = `mailto:${CONTACT_EMAIL}?subject=Mavverik%20brief&body=Stack%3A%0ATimeline%3A%0ATeam%20size%3A%0A`;
 
