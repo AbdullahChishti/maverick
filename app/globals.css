@@ -2,22 +2,284 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================================
+   MAVVERIK DESIGN SYSTEM
+   A refined, systematic approach to styling
+   ============================================================================ */
+
 @layer base {
+  :root {
+    /* -------------------------------------------------------------------------
+       COLOR PALETTE
+       Carefully crafted dark theme with warm neutrals and accent colors
+       ------------------------------------------------------------------------- */
+
+    /* Surface colors - Dark theme base */
+    --surface: #0A0A0B;
+    --surface-raised: #111113;
+    --surface-sunken: #050506;
+    --surface-muted: #18181B;
+
+    /* Ink colors - Text hierarchy */
+    --ink: #FAFAFA;
+    --ink-soft: #E4E4E7;
+    --ink-muted: #A1A1AA;
+    --ink-faint: #52525B;
+
+    /* Accent colors - Brand purple/indigo */
+    --accent: #8B5CF6;
+    --accent-deep: #6D28D9;
+    --accent-bright: #A78BFA;
+    --accent-tint: rgba(139, 92, 246, 0.12);
+
+    /* Rule colors - Borders and dividers */
+    --rule: rgba(255, 255, 255, 0.08);
+    --rule-strong: rgba(255, 255, 255, 0.16);
+    --rule-slate: rgba(255, 255, 255, 0.06);
+
+    /* Slate surface variants */
+    --slate-deep: #0F0F12;
+    --slate-mid: #16161A;
+    --slate-raised: #1C1C21;
+
+    /* Text on slate backgrounds */
+    --on-slate: #F4F4F5;
+    --on-slate-soft: #D4D4D8;
+    --on-slate-muted: #71717A;
+
+    /* Hero section specific */
+    --hero-bg: #0A0A0B;
+    --hero-bg-raised: #111113;
+    --hero-text: #FAFAFA;
+    --hero-text-soft: #D4D4D8;
+    --hero-text-muted: #71717A;
+    --hero-accent-wave: #8B5CF6;
+    --hero-wave-teal: #14B8A6;
+    --hero-wave-blue: #3B82F6;
+    --hero-min-h: 640px;
+    --hero-display-size: clamp(2.75rem, 5.5vw, 4.75rem);
+    --hero-display-leading: 1.04;
+    --hero-display-tracking: -0.025em;
+
+    /* Navigation in hero */
+    --nav-hero-fg: #FAFAFA;
+    --nav-hero-fg-muted: #A1A1AA;
+    --nav-hero-fg-active: #FFFFFF;
+    --nav-hero-underline: #8B5CF6;
+    --nav-hero-category: #71717A;
+
+    /* Editorial sections */
+    --editorial-surface: #FAFAFA;
+    --editorial-surface-raised: #FFFFFF;
+    --editorial-ink: #18181B;
+
+    /* -------------------------------------------------------------------------
+       SHADOWS
+       Layered shadows for depth hierarchy
+       ------------------------------------------------------------------------- */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.25);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.25);
+    --shadow-signal: 0 8px 24px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.3);
+
+    /* -------------------------------------------------------------------------
+       TRANSITIONS
+       Consistent timing and easing
+       ------------------------------------------------------------------------- */
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration-fast: 150ms;
+    --duration-normal: 200ms;
+    --duration-slow: 300ms;
+  }
+
+  /* ---------------------------------------------------------------------------
+     BASE STYLES
+     --------------------------------------------------------------------------- */
+
   html {
     scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    background: #F5F5F4;
-    color: #1C1917;
-    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-sans), 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Selection styling */
+  ::selection {
+    background: var(--accent);
+    color: white;
+  }
+
+  ::-moz-selection {
+    background: var(--accent);
+    color: white;
+  }
+
+  /* Focus styles - accessible and branded */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Smooth focus transitions */
+  a, button, input, select, textarea {
+    transition: outline-color var(--duration-fast) ease;
   }
 }
 
 @layer components {
+  /* ---------------------------------------------------------------------------
+     LAYOUT
+     --------------------------------------------------------------------------- */
+
   .container-wide {
     @apply mx-auto w-full px-6 lg:px-10;
     max-width: 1400px;
+  }
+
+  .container-narrow {
+    @apply mx-auto w-full px-6 lg:px-10;
+    max-width: 960px;
+  }
+
+  /* ---------------------------------------------------------------------------
+     BUTTONS
+     Consistent button styling with proper states
+     --------------------------------------------------------------------------- */
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2;
+    @apply px-5 py-2.5 rounded-full;
+    @apply bg-white text-zinc-900;
+    @apply text-sm font-medium;
+    @apply transition-all duration-200;
+  }
+
+  .btn-primary:hover {
+    @apply bg-zinc-100;
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active {
+    @apply bg-zinc-200;
+    transform: translateY(0);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2;
+    @apply px-5 py-2.5 rounded-full;
+    @apply bg-transparent text-white;
+    @apply text-sm font-medium;
+    @apply border border-white/20;
+    @apply transition-all duration-200;
+  }
+
+  .btn-secondary:hover {
+    @apply bg-white/5 border-white/30;
+  }
+
+  /* ---------------------------------------------------------------------------
+     CARDS
+     Consistent card styling
+     --------------------------------------------------------------------------- */
+
+  .card {
+    @apply rounded-lg;
+    background: var(--surface-raised);
+    border: 1px solid var(--rule);
+  }
+
+  .card-elevated {
+    @apply rounded-lg;
+    background: var(--surface-raised);
+    border: 1px solid var(--rule);
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+@layer utilities {
+  /* ---------------------------------------------------------------------------
+     ANIMATIONS
+     --------------------------------------------------------------------------- */
+
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes pulse-subtle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  .animate-pulse-subtle {
+    animation: pulse-subtle 2s ease-in-out infinite;
+  }
+
+  /* ---------------------------------------------------------------------------
+     TYPOGRAPHY UTILITIES
+     --------------------------------------------------------------------------- */
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* ---------------------------------------------------------------------------
+     VISUAL UTILITIES
+     --------------------------------------------------------------------------- */
+
+  /* Subtle gradient overlays */
+  .gradient-fade-b {
+    background: linear-gradient(to bottom, transparent, var(--surface));
+  }
+
+  .gradient-fade-t {
+    background: linear-gradient(to top, transparent, var(--surface));
+  }
+
+  /* Glass effect */
+  .glass {
+    background: rgba(10, 10, 11, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Subtle noise texture overlay */
+  .noise {
+    position: relative;
+  }
+
+  .noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
   }
 }

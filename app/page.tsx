@@ -7,8 +7,8 @@ export default function Home() {
       <Navigation />
       <main>
         <Hero />
-        <Services />
         <Founders />
+        <Services />
         <Contact />
       </main>
       <Footer />
