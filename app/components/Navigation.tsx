@@ -6,30 +6,21 @@ import { Menu, X } from "lucide-react";
 import { BRIEF_MAILTO } from "@/lib/utils";
 
 const links = [
-  { href: "#founders", label: "Team" },
   { href: "#services", label: "Services" },
+  { href: "#founders", label: "Clients" },
   { href: "#contact", label: "Contact" },
 ];
 
 export function Navigation() {
   const [open, setOpen] = useState(false);
-  const [dark, setDark] = useState(true);
+  const [inHero, setInHero] = useState(true);
 
   const update = useCallback(() => {
     const hero = document.getElementById("hero");
-    const services = document.getElementById("services");
-    const contact = document.getElementById("contact");
-
-    const heroBottom = hero?.getBoundingClientRect().bottom ?? 0;
-    const servicesTop = services?.getBoundingClientRect().top ?? Infinity;
-    const servicesBottom = services?.getBoundingClientRect().bottom ?? 0;
-    const contactTop = contact?.getBoundingClientRect().top ?? Infinity;
-
-    const inHero = heroBottom > 60;
-    const inServices = servicesTop <= 60 && servicesBottom > 60;
-    const inContact = contactTop <= 60;
-
-    setDark(inHero || inServices || inContact);
+    if (hero) {
+      const heroBottom = hero.getBoundingClientRect().bottom;
+      setInHero(heroBottom > 80);
+    }
   }, []);
 
   useEffect(() => {
@@ -46,30 +37,44 @@ export function Navigation() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50">
-        <nav className="container-wide flex h-20 items-center justify-between">
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+          inHero ? "" : "bg-white/80 backdrop-blur-md"
+        }`}
+      >
+        <div className={`h-px ${inHero ? "bg-[#26262E]" : "bg-[#E4E4E7]"}`} />
+        <nav className="container-wide flex h-16 items-center justify-between">
           <a
-            href="#hero"
-            onClick={(e) => handleClick(e, "#hero")}
-            className={`text-lg font-medium ${dark ? "text-white" : "text-neutral-900"}`}
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className={`text-base font-medium transition-colors duration-300 ${
+              inHero ? "text-[#F4F4F5]" : "text-[#18181B]"
+            }`}
           >
             Mavverik
           </a>
 
-          <div className="hidden items-center gap-10 lg:flex">
+          <div className="hidden items-center gap-8 lg:flex">
             {links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleClick(e, link.href)}
-                className={`text-sm ${dark ? "text-white/60 hover:text-white" : "text-neutral-500 hover:text-neutral-900"}`}
+                className={`text-sm transition-colors duration-200 ${
+                  inHero
+                    ? "text-[#A1A1AA] hover:text-[#F4F4F5]"
+                    : "text-[#71717A] hover:text-[#18181B]"
+                }`}
               >
                 {link.label}
               </a>
             ))}
             <a
               href={BRIEF_MAILTO}
-              className={`text-sm font-medium ${dark ? "text-white" : "text-neutral-900"}`}
+              className="text-sm text-[#7C6BF5] transition-colors duration-200 hover:text-[#6355D8]"
             >
               Get in touch
             </a>
@@ -77,9 +82,10 @@ export function Navigation() {
 
           <button
             onClick={() => setOpen(true)}
-            className={`lg:hidden ${dark ? "text-white" : "text-neutral-900"}`}
+            className={`lg:hidden ${inHero ? "text-[#F4F4F5]" : "text-[#18181B]"}`}
+            aria-label="Open menu"
           >
-            <Menu className="h-6 w-6" />
+            <Menu className="h-5 w-5" />
           </button>
         </nav>
       </header>
@@ -90,28 +96,35 @@ export function Navigation() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black lg:hidden"
+            className="fixed inset-0 z-50 bg-white lg:hidden"
           >
-            <div className="container-wide flex h-20 items-center justify-between">
-              <span className="text-lg font-medium text-white">Mavverik</span>
-              <button onClick={() => setOpen(false)} className="text-white">
-                <X className="h-6 w-6" />
+            <div className="h-px bg-[#E4E4E7]" />
+            <div className="container-wide flex h-16 items-center justify-between">
+              <span className="text-base font-medium text-[#18181B]">Mavverik</span>
+              <button
+                onClick={() => setOpen(false)}
+                className="text-[#18181B]"
+                aria-label="Close menu"
+              >
+                <X className="h-5 w-5" />
               </button>
             </div>
-            <nav className="container-wide flex flex-col gap-6 pt-12">
+            <nav className="container-wide flex flex-col gap-1 pt-8">
               {links.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleClick(e, link.href)}
-                  className="text-3xl font-medium text-white"
+                  className="py-3 text-2xl font-medium text-[#18181B]"
                 >
                   {link.label}
                 </a>
               ))}
-              <a href={BRIEF_MAILTO} className="mt-8 text-lg text-white/60">
-                {BRIEF_MAILTO.replace("mailto:", "")}
-              </a>
+              <div className="mt-8 border-t border-[#E4E4E7] pt-8">
+                <a href={BRIEF_MAILTO} className="text-sm text-[#7C6BF5]">
+                  {BRIEF_MAILTO.replace("mailto:", "")}
+                </a>
+              </div>
             </nav>
           </motion.div>
         )}

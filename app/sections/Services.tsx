@@ -2,29 +2,25 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { anchor } from "@/lib/utils";
 
 export function Services() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-20%" });
+  const isInView = useInView(ref, { once: true, margin: "-10%" });
 
   return (
-    <section
-      id="services"
-      ref={ref}
-      className={`flex min-h-[70vh] items-center bg-neutral-950 ${anchor}`}
-    >
-      <div className="container-wide py-24">
-        <motion.p
+    <section id="services" ref={ref} className="bg-[#FAFAFA] py-24 lg:py-32">
+      <div className="container-wide">
+        <motion.div
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.8 }}
-          className="max-w-3xl text-[clamp(2rem,5vw,4rem)] font-medium leading-[1.15] tracking-[-0.03em] text-white"
+          transition={{ duration: 0.6 }}
+          className="max-w-2xl"
         >
-          We design, build, and deploy
-          <span className="text-white/40"> AI systems, data platforms, and cloud infrastructure </span>
-          for regulated industries.
-        </motion.p>
+          <p className="label label-accent mb-6">What we build</p>
+          <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-medium leading-[1.25] tracking-[-0.02em] text-[#18181B]">
+            LLM applications, RAG systems, and AI agents—deployed to production in regulated industries.
+          </h2>
+        </motion.div>
       </div>
     </section>
   );

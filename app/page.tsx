@@ -5,10 +5,10 @@ export default function Home() {
   return (
     <>
       <Navigation />
-      <main id="main-content">
+      <main>
         <Hero />
-        <Founders />
         <Services />
+        <Founders />
         <Contact />
       </main>
       <Footer />
