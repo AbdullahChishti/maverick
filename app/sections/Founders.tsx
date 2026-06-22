@@ -3,61 +3,42 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
-const clients = [
-  { name: "JPMorgan", logo: "JPM" },
-  { name: "Barclays", logo: "BCL" },
-  { name: "Siemens", logo: "SIE" },
-  { name: "Audi", logo: "AUD" },
-];
-
 export function Founders() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
-    <section id="founders" ref={ref} className="py-24 lg:py-32 bg-white">
+    <section id="founders" ref={ref} className="py-16 lg:py-24 bg-stone-900 text-stone-100">
       <div className="container-wide">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
-          {/* Left - About */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-          >
-            <p className="text-violet-600 text-sm font-medium tracking-wide mb-4">Who we are</p>
-            <h2 className="text-3xl lg:text-4xl font-semibold text-[#1C1917] leading-tight">
-              Engineers from Microsoft, OpenAI & Google.
-            </h2>
-            <p className="mt-6 text-stone-600 leading-relaxed">
-              We've spent years building AI infrastructure at scale. Now we help enterprises do the same—bringing production-grade engineering discipline to every project.
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6 }}
+          className="grid lg:grid-cols-2 gap-12 lg:gap-24"
+        >
+          <div>
+            <p className="text-xs text-stone-500 uppercase tracking-wide mb-4">About</p>
+            <p className="text-2xl lg:text-3xl font-medium leading-snug">
+              Engineers from Microsoft, OpenAI, and Google building AI that ships.
             </p>
-            <p className="mt-4 text-stone-600 leading-relaxed">
-              Our team combines deep ML expertise with the systems thinking needed to ship reliable, compliant AI in regulated industries.
-            </p>
-          </motion.div>
-
-          {/* Right - Clients */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.15 }}
-          >
-            <p className="text-sm font-medium text-stone-500 mb-6">Trusted by</p>
-            <div className="grid grid-cols-2 gap-4">
-              {clients.map((client) => (
-                <div
-                  key={client.name}
-                  className="flex items-center justify-center h-24 bg-stone-50 rounded-xl border border-stone-100"
-                >
-                  <span className="text-xl font-semibold text-stone-400">{client.name}</span>
-                </div>
-              ))}
+          </div>
+          <div className="flex flex-col justify-end">
+            <div className="grid grid-cols-3 gap-8 text-center">
+              <div>
+                <p className="text-4xl lg:text-5xl font-bold">50+</p>
+                <p className="text-xs text-stone-500 mt-2 uppercase tracking-wide">Projects</p>
+              </div>
+              <div>
+                <p className="text-4xl lg:text-5xl font-bold">12w</p>
+                <p className="text-xs text-stone-500 mt-2 uppercase tracking-wide">Avg time</p>
+              </div>
+              <div>
+                <p className="text-4xl lg:text-5xl font-bold">100%</p>
+                <p className="text-xs text-stone-500 mt-2 uppercase tracking-wide">Shipped</p>
+              </div>
             </div>
-            <p className="mt-6 text-sm text-stone-500">
-              ...and 40+ other enterprises across finance, healthcare, and technology.
-            </p>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
