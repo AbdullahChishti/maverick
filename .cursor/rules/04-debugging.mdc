@@ -1,0 +1,55 @@
+---
+description: Root-cause debugging — reproduce, evidence, fix, validate, regression protection
+alwaysApply: false
+globs: "**/*.{ts,tsx,js,jsx,log}"
+---
+
+# Debugging
+
+## Purpose
+
+Systematic root-cause analysis. Never patch symptoms only. Auto-triggered on bug/investigation requests per `07-workflow-invocation.mdc`.
+
+## Workflow
+
+```
+Reproduce → Gather Evidence → Root Cause Analysis → Fix → Validate → Regression Protection
+```
+
+## Step Requirements
+
+### Reproduce
+- Exact steps; environment (branch, browser, Node)
+- Capture errors, stack traces, `dev-server.log` if relevant
+
+### Gather Evidence
+- Read source — do not guess
+- Check `git log` / `git diff` for recent changes
+- Browser console/network for UI issues
+
+### Root Cause
+- Identify **why**, not just **where**
+- One-sentence root cause before fixing
+
+### Fix
+- Minimal change; follow `20-project-conventions.mdc`
+
+### Validate
+- Reproduce original steps — bug gone
+- `npm run build` + `npx tsc --noEmit`
+
+### Regression Protection
+- Add test when tooling exists
+- Document if workflow-affecting
+
+## Routing
+
+Bug/investigation tasks → **Debugging Specialist** (see `06-role-routing.mdc`)
+
+## Anti-Patterns
+
+| Avoid | Do |
+|-------|-----|
+| Symptom-only fixes | Fix root cause |
+| "I think it's fixed" | Verify with reproduction |
+| Unrelated bundled changes | One fix per cycle |

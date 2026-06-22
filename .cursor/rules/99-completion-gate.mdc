@@ -1,0 +1,80 @@
+---
+description: Final completion gate — evidence mandatory, Orchestrator approval only
+alwaysApply: true
+---
+
+# Completion Gate
+
+## Purpose
+
+No task is complete without evidence. Enforced at pipeline phase 10 per `07-workflow-invocation.mdc`.
+
+## Completion Criteria (All Required)
+
+- [ ] **Requirements satisfied**
+- [ ] **Validation completed** — commands run, output captured
+- [ ] **Tests pass** — when test tooling exists (N/A if none)
+- [ ] **Build succeeds** — `npm run build` exits 0
+- [ ] **Review completed** — Review Specialist + Orchestrator final review
+- [ ] **No unresolved critical findings**
+- [ ] **Evidence provided**
+
+## Acceptable Evidence
+
+| Type | Example |
+|------|---------|
+| Build | `npm run build` success output |
+| TypeScript | `npx tsc --noEmit` clean |
+| Tests | Runner pass output (when exists) |
+| UI | Browser verification steps or snapshot |
+| Bug fix | Before/after reproduction + root cause |
+| Runtime | Logs, dev-server output |
+
+## Prohibited Completion Statements
+
+Never acceptable as completion proof:
+
+- "Looks correct"
+- "Should work"
+- "Probably fixed"
+- "I think it's done"
+- "No errors in the code" (without running validation)
+
+## Incomplete Status
+
+```
+## Status: INCOMPLETE
+Reason: [missing evidence or failed check]
+Next: [specific step]
+```
+
+## Approval Authority
+
+**Orchestrator role only** (see `06-role-routing.mdc`).
+
+Specialist roles return evidence — they **never** self-certify completion.
+
+## Approval Template
+
+```
+## Status: COMPLETE
+
+### Requirements
+- [x] …
+
+### Validation
+- [x] npm run build — PASS
+- [x] npx tsc --noEmit — PASS
+
+### Review
+- [x] Review Specialist — no critical findings
+- [x] Orchestrator final approval
+
+### Evidence
+[output excerpts]
+
+### Documentation
+[updated files or none]
+```
+
+Any failed checkbox → **INCOMPLETE**.

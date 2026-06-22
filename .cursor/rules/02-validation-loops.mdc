@@ -1,0 +1,53 @@
+---
+description: Loop engineering — mandatory validate-analyze-repair-revalidate cycles
+alwaysApply: true
+---
+
+# Validation Loops
+
+## Standard Loop
+
+```
+Understand → Plan → Implement → Validate → Analyze → Repair → Revalidate → Review → Complete
+```
+
+Integrated into `07-workflow-invocation.mdc` — runs on every task automatically.
+
+## Mandatory Rule
+
+**Never stop after generation. Always validate.**
+
+## Task-Specific Loops
+
+| Task | Loop |
+|------|------|
+| Feature | Implement → Build → Test → Fix → Retest |
+| Bug | Reproduce → Root Cause → Fix → Verify → Regression check |
+| Refactor | Refactor → Build → tsc → Behavior compare |
+| Docs | Update → Verify facts against code |
+
+## Repository Validation Commands
+
+| Check | Command | When |
+|-------|---------|------|
+| Production build | `npm run build` | **Always** after code changes |
+| TypeScript | `npx tsc --noEmit` | After TS/TSX changes |
+| Dev smoke | `npm run dev` | UI/runtime verification |
+| Section contract | Verify `id` ↔ nav `#hash` | Section/nav changes |
+| Tests | Test runner | When test tooling exists |
+
+## Analyze Phase
+
+On failure:
+1. Capture exact error output
+2. Classify: implementation, environment, or test issue
+3. One focused fix per cycle
+4. Re-run full validation after fix
+
+## Repair Limit
+
+**Maximum: 10 iterations.** Then report `INCOMPLETE` with accumulated evidence and blockers.
+
+## Exit Criteria
+
+All `99-completion-gate.mdc` criteria satisfied with evidence. Orchestrator verifies before approval.

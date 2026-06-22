@@ -1,0 +1,69 @@
+---
+description: Technology rules for Maverick — Next.js, Signal Slate, Framer Motion, Vercel
+alwaysApply: false
+globs: "{app/**/*.{ts,tsx},lib/**/*.ts,tailwind.config.ts,app/globals.css,next.config.ts}"
+---
+
+# Technology Rules (Maverick)
+
+Repository-specific technology standards. Subordinate to `20-project-conventions.mdc`.
+
+## Next.js 15 App Router
+
+- Single route: `app/page.tsx` composes sections (server component)
+- Root layout: fonts, metadata, skip link in `app/layout.tsx`
+- **Server:** `page.tsx`, `layout.tsx`, static presentational components
+- **Client:** `"use client"` first line for interactive UI (nav, sections, video)
+- New sections → `app/sections/` + barrel + `page.tsx`
+- New components → `app/components/` + barrel
+- Cross-folder imports: `@/` alias
+- **No API routes** unless explicitly requested
+- **No global state** — local hooks only
+
+## Signal Slate Design System
+
+Sources: `app/globals.css`, `tailwind.config.ts`, `lib/utils.ts`
+
+**Prefer:**
+- Semantic tokens: `bg-surface`, `text-ink-muted`, `text-accent-deep`
+- Component classes: `.container-wide`, `.section`, `.btn-primary`, `.section-tag`, `.cap-card`
+- `cn()` for class merging
+- 8px grid: `grid-*` spacing
+
+**Avoid:** Hardcoded hex when semantic token exists; duplicate layout inline
+
+## Framer Motion
+
+- Use Framer's `useInView(ref, { once: true, margin: "-15%" })` in sections
+- Easing: `[0.16, 1, 0.3, 1]`
+- Hero: mount animations; sections: scroll reveals
+- Respect `prefers-reduced-motion` (globals.css + `HeroVideoBackground.tsx`)
+
+## Section Contracts
+
+| Section | `id` | Nav hash |
+|---------|------|----------|
+| Hero | `hero` | `#hero` |
+| Founders | `founders` | `#founders` |
+| Services | `services` | `#services` |
+| Contact | `contact` | `#contact` |
+
+Every section: `anchor` class from `@/lib/utils`. Update nav + barrel + `page.tsx` together.
+
+## Accessibility
+
+- Skip link → `#main-content`
+- `aria-label` on icon-only buttons
+- `aria-hidden="true"` on decorative SVGs/video
+- `prefers-reduced-motion` support required
+
+## Deploy (Vercel)
+
+- Semver Git tags per `docs/VERSIONING.md`
+- Rollback via tag checkout or Vercel promote
+- Never force-push `main`
+- Do not deploy unless explicitly requested
+
+## Validation
+
+After technology-layer changes: `npm run build` + `npx tsc --noEmit` + relevant smoke checks.

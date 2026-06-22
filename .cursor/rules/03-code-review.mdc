@@ -1,0 +1,54 @@
+---
+description: Mandatory review — all changes reviewed before completion
+alwaysApply: false
+globs: "**/*.{ts,tsx,js,jsx,css}"
+---
+
+# Code Review
+
+## Purpose
+
+Every change is reviewed — even when implementation appears successful.
+
+## Review Flow
+
+```
+Review Specialist → checklist + findings
+        ↓
+Orchestrator → final review + approval decision
+```
+
+## Review Categories
+
+| Category | Check |
+|----------|-------|
+| Correctness | Requirements met; edge cases handled |
+| Security | No secrets committed; no XSS/injection vectors |
+| Performance | No obvious regressions |
+| Maintainability | Clear naming; no dead code |
+| Consistency | Matches `20-project-conventions.mdc` and `10-technology-rules.mdc` |
+| Regression risk | Existing behavior preserved unless intentional |
+
+## Checklist
+
+- [ ] Requirements satisfied
+- [ ] No dead code or unused imports
+- [ ] No duplicated logic — reuse `lib/utils.ts`, existing components
+- [ ] Naming conventions followed
+- [ ] `@/` imports for cross-folder references
+- [ ] Section IDs match nav if sections/nav touched
+- [ ] `"use client"` only where needed
+- [ ] Accessibility preserved
+- [ ] `npm run build` passes
+- [ ] `npx tsc --noEmit` passes
+
+## Output Format
+
+```
+✓ Passed: [items]
+✗ Critical: [file:line — issue]
+⚠ Advisory: [suggestions]
+Evidence: [build/test output]
+```
+
+Review Specialist returns findings. **Only Orchestrator approves.**

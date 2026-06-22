@@ -1,0 +1,124 @@
+---
+description: Maverick repository conventions — highest authority, overrides generic AI preferences
+alwaysApply: true
+---
+
+# Project Conventions (Maverick)
+
+## Authority
+
+**Highest authority.** Overrides generic AI preferences and framework boilerplate. When in doubt, match existing code.
+
+## Package & Brand
+
+- Package: `maverick-website` v1.0.0
+- Brand: **Mavverik** | Contact: `contact@mavverik.com`
+- Tagline: *"Production AI the regulators sign off on."*
+
+## Tech Stack
+
+| Layer | Technology | Version |
+|-------|------------|---------|
+| Framework | Next.js App Router | 15.5.19 |
+| UI | React | 19.2.7 |
+| Language | TypeScript (strict) | 5.9.3 |
+| Styling | Tailwind + Signal Slate CSS vars | 3.4.19 |
+| Animation | Framer Motion | 11.18.2 |
+| Deploy | Vercel + semver tags | `docs/VERSIONING.md` |
+
+**Not in use:** API routes, global state, test runner (yet), ESLint/Prettier, CI config in repo.
+
+## Folder Structure
+
+```
+maverick/
+├── app/components/     # Reusable UI + index.ts
+├── app/sections/       # Page sections + index.ts
+├── app/hooks/          # Custom hooks
+├── app/globals.css     # Design tokens + component classes
+├── app/layout.tsx      # Root layout
+├── app/page.tsx        # Server page composition
+├── lib/utils.ts        # cn(), tokens, contact constants
+├── public/             # Static assets
+├── docs/VERSIONING.md  # Release workflow
+├── design-reviews/     # Design notes (not runtime)
+├── AGENTS.md           # Agent handbook
+└── .cursor/rules/      # AI engineering OS
+```
+
+## Page Composition
+
+```
+Navigation → main#main-content → [Hero, Founders, Services, Contact] → Footer
+```
+
+## Section Contract
+
+| Section | id | Nav hash | File |
+|---------|-----|----------|------|
+| Hero | `hero` | `#hero` | `app/sections/Hero.tsx` |
+| Founders | `founders` | `#founders` | `app/sections/Founders.tsx` |
+| Services | `services` | `#services` | `app/sections/Services.tsx` |
+| Contact | `contact` | `#contact` | `app/sections/Contact.tsx` |
+
+## Naming
+
+| Type | Pattern |
+|------|---------|
+| Components/Sections | PascalCase `.tsx`, named export |
+| Hooks | camelCase `use*` |
+| Props | `ComponentNameProps` |
+| Constants | SCREAMING_SNAKE_CASE |
+| Section IDs | lowercase kebab |
+
+## Import Order
+
+`"use client"` → React → third-party → `@/lib/utils` → relative → local data
+
+## Architecture
+
+- **State:** Local `useState`/`useEffect` only
+- **Contact:** `CONTACT_EMAIL`, `CONTACT_MAILTO`, `BRIEF_MAILTO` in `lib/utils.ts`
+- **Nav:** Hash scroll via `scrollIntoView`; nav theme tracks `#hero` (dark overlay)
+- **Animations:** Framer `useInView`; see `10-technology-rules.mdc`
+
+## Shared Utilities (`lib/utils.ts`)
+
+`cn()`, `space`, `layout`, `type`, `container`, `section`, `surface`, `anchor`, contact constants, `getContactIntentLabel()`
+
+## Components
+
+| Component | Role |
+|-----------|------|
+| `Navigation.tsx` | Fixed nav, mobile drawer, scroll theme |
+| `Footer.tsx` | Site footer |
+| `HeroVideoBackground.tsx` | Hero video + reduced-motion fallback |
+| `SignalGraph.tsx` | SVG wave fallback |
+| `Seal.tsx` | Governance seal mark |
+
+## Build & Validation
+
+```bash
+npm run dev      # Local development
+npm run build    # Required gate
+npm run start    # Production serve
+npx tsc --noEmit # TypeScript check
+```
+
+No CI/CD in repo. When tests/CI are added, update `02-validation-loops.mdc` and `99-completion-gate.mdc`.
+
+## Existing Workflows (Preserve)
+
+| Workflow | Doc |
+|----------|-----|
+| Agentic development | `AGENTS.md`, `.cursor/rules/` |
+| Versioning & deploy | `docs/VERSIONING.md` |
+| Design reviews | `design-reviews/` |
+
+## Out of Scope (Unless Requested)
+
+API routes, backend, global state, unrelated refactors, committing MCP/editor configs.
+
+## Self-Improvement
+
+When architecture changes: update this file, `10-technology-rules.mdc`, and `PROJECT_STRUCTURE.md`.

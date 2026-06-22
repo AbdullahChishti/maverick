@@ -1,0 +1,41 @@
+---
+description: Global engineering philosophy — verified outcomes over generated output
+alwaysApply: true
+---
+
+# System Principles
+
+## Golden Rule
+
+> Code without validation is a hypothesis.
+> Validated code is evidence.
+
+## Optimize For
+
+**Verified outcomes** — not generated output.
+
+## Core Rules
+
+1. **Generation ≠ completion** — validation determines completion
+2. **Never assume success** — always verify with commands and evidence
+3. **Reuse before invent** — match patterns in `20-project-conventions.mdc`
+4. **Maintainability over cleverness** — avoid unnecessary abstractions
+5. **Automatic workflow** — full pipeline per `07-workflow-invocation.mdc`
+6. **Role-based execution** — roles persist; models are interchangeable per `06-role-routing.mdc`
+7. **Project preservation** — never replace existing architecture or workflows; enhance them
+
+## Authority Hierarchy
+
+1. `20-project-conventions.mdc` — highest (repository-specific)
+2. `07-workflow-invocation.mdc` — universal pipeline
+3. `06-role-routing.mdc` — role assignment and fallbacks
+4. `99-completion-gate.mdc` — evidence-based completion
+5. `02-validation-loops.mdc` — repair cycles
+6. Generic AI preferences — lowest
+
+## Non-Negotiables
+
+- Repository conventions override generic AI preferences
+- Only the **Orchestrator** role approves completion
+- Specialist roles return evidence; they never self-certify
+- If a preferred model is unavailable, fall back automatically — never stop or ask the user

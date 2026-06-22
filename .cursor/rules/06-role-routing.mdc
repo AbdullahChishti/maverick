@@ -1,0 +1,102 @@
+---
+description: Role-based routing with automatic model fallback — resilient to model changes
+alwaysApply: true
+---
+
+# Role-Based Routing
+
+## Purpose
+
+Route work by **role**, not by hardcoded model dependency. Models are interchangeable within roles. Workflow behavior is unchanged regardless of which model fills a role.
+
+## Architecture
+
+```
+Orchestrator
+     │
+ ┌───┼───┬───────┬────────┬──────────┐
+ ▼   ▼   ▼       ▼        ▼          ▼
+Impl Test Debug Review  Doc    Parallel
+```
+
+## Roles
+
+| Role | Responsibilities |
+|------|------------------|
+| **Orchestrator** | Plan, decompose, route, verify, final review, **approve completion** |
+| **Implementation Specialist** | Features, refactors, code generation |
+| **Testing Specialist** | Test creation, repair, execution |
+| **Debugging Specialist** | Reproduce, root cause, fix, regression protection |
+| **Review Specialist** | Pre-approval checklist (`03-code-review.mdc`) |
+| **Documentation Specialist** | Doc sync (`05-documentation.mdc`) |
+| **Parallel Execution Specialist** | Independent subtasks run concurrently |
+
+## Fallback Policy
+
+For each role:
+1. Attempt **Primary** model
+2. If unavailable → **Fallback** automatically
+3. If unavailable → **Secondary Fallback** automatically
+4. **Never stop execution. Never require user intervention.**
+
+When launching subagents, pass the best available model for the role. If subagent launch fails, the active agent assumes the role using the next fallback.
+
+## Current Preferred Model Mapping
+
+> Update this table when Cursor adds/removes models. **Roles and workflow do not change.**
+
+| Role | Primary | Fallback | Secondary Fallback |
+|------|---------|----------|-------------------|
+| Orchestrator | Claude Opus 4.8 | Claude Sonnet | GPT-5 |
+| Implementation Specialist | Kimi K2.5 | Composer 2.5 | Claude Sonnet |
+| Testing Specialist | Kimi K2.5 | Composer 2.5 | GPT-5 |
+| Debugging Specialist | Kimi K2.5 | Claude Sonnet | GPT-5 |
+| Review Specialist | Claude Opus 4.8 | Claude Sonnet | GPT-5 |
+| Documentation Specialist | Kimi K2.5 | Composer 2.5 | Claude Sonnet |
+| Parallel Execution Specialist | Composer 2.5 | Kimi K2.5 | Claude Sonnet |
+
+## Automatic Task → Role Mapping
+
+| Task signal | Role(s) |
+|-------------|---------|
+| Architecture, planning, repo analysis | Orchestrator |
+| Feature, refactor, code generation | Implementation Specialist |
+| Test creation/repair | Testing Specialist |
+| Bug, error, investigation | Debugging Specialist |
+| Pre-approval review | Review Specialist |
+| Doc sync | Documentation Specialist |
+| Independent parallel subtasks | Parallel Execution Specialist |
+| Final approval | Orchestrator **only** |
+
+## Completion Authority
+
+| Role | Can Approve Completion? |
+|------|-------------------------|
+| Orchestrator | **Yes** — after all gates pass |
+| All other roles | **No** — evidence only |
+
+If Orchestrator primary and fallback models are all unavailable, the highest-capability available fallback model temporarily assumes Orchestrator duties. Specialists still never self-certify.
+
+## Specialist Handoff Format
+
+```
+## Done
+[What changed]
+
+## Validated
+[Commands run and results]
+
+## Evidence
+[Build output, test results, logs, screenshots]
+
+## Open Issues
+[Blockers needing Orchestrator decision]
+```
+
+Orchestrator reviews before `99-completion-gate.mdc`.
+
+## Conflict Resolution
+
+1. Escalate to Orchestrator
+2. Orchestrator reviews all evidence
+3. Orchestrator decides — specialists do not self-approve

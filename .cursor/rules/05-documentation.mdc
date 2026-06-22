@@ -1,0 +1,43 @@
+---
+description: Documentation standards — sync docs with implementation automatically
+alwaysApply: false
+globs: "**/*.{md,mdx,ts,tsx}"
+---
+
+# Documentation
+
+## Purpose
+
+Documentation must match implementation. Auto-triggered in pipeline phase per `07-workflow-invocation.mdc`.
+
+## Update When
+
+- Features or sections change
+- Architecture or folder structure changes
+- Public API or exported utilities change
+- Developer workflow changes
+
+## Locations
+
+| Path | Purpose |
+|------|---------|
+| `AGENTS.md` | Agent system handbook |
+| `PROJECT_STRUCTURE.md` | Structure, section IDs, utilities |
+| `docs/VERSIONING.md` | Release and deploy workflow |
+| `design-reviews/` | Design notes (historical) |
+
+## Rules
+
+- Do not create markdown files unless requested
+- Verify every path and filename mentioned exists
+- Section IDs must match `Navigation.tsx` hash links
+- Tech versions must match `package.json`
+- Update `PROJECT_STRUCTURE.md` when architecture changes (currently outdated)
+
+## Routing
+
+Documentation phase → **Documentation Specialist** (see `06-role-routing.mdc`)
+
+## Validation
+
+After doc updates, verify facts against live code before Orchestrator approval.

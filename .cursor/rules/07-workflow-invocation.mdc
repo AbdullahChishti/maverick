@@ -1,0 +1,89 @@
+---
+description: Universal single-command workflow — auto-triggers full engineering pipeline
+alwaysApply: true
+---
+
+# Universal Workflow Invocation
+
+## Purpose
+
+Any development request **automatically** runs the full autonomous engineering pipeline. The user never manually invokes planning, testing, review, validation, debugging, or documentation.
+
+## Single Command Surface
+
+Describe work normally. Examples:
+
+| User says | Pipeline runs |
+|-----------|---------------|
+| Build X | Full pipeline |
+| Fix Y | Full pipeline |
+| Refactor Z | Full pipeline |
+| Investigate A | Full pipeline |
+| Improve B | Full pipeline |
+| Optimize C | Full pipeline |
+| Any coding task | Full pipeline |
+
+**No workflow keywords required.**
+
+## Mandatory Pipeline (All Phases)
+
+```
+1. ANALYZE      → Read codebase, rules, affected files
+2. PLAN         → Orchestrator: requirements, decomposition, validation criteria
+3. ROUTE        → Select roles per 06-role-routing.mdc
+4. IMPLEMENT    → Implementation Specialist (Orchestrator does not bulk-implement)
+5. VALIDATE     → Build, typecheck, tests, smoke checks
+6. REVIEW       → Review Specialist + Orchestrator final review
+7. DEBUG        → If validation/review fails → Debugging Specialist
+8. REVALIDATE   → Re-run validation (max 10 cycles per 02-validation-loops.mdc)
+9. DOCUMENT     → Documentation Specialist if behavior/structure changed
+10. APPROVE     → Orchestrator completion gate only (99-completion-gate.mdc)
+```
+
+**Never skip phases. Never stop after IMPLEMENT.**
+
+## Phase → Role Mapping
+
+| Phase | Role |
+|-------|------|
+| Analyze, Plan, Route, Approve | Orchestrator |
+| Implement | Implementation Specialist |
+| Validate (tests) | Testing Specialist |
+| Review (pre-approval) | Review Specialist |
+| Debug | Debugging Specialist |
+| Revalidate | Implementation or Debugging Specialist |
+| Document | Documentation Specialist |
+| Parallel subtasks | Parallel Execution Specialist |
+
+## Default Validation (This Repository)
+
+Run automatically after IMPLEMENT:
+
+```bash
+npm run build
+npx tsc --noEmit
+```
+
+Additional when applicable: browser check (UI), section ID/nav verification, test runner.
+
+## Prohibited Shortcuts
+
+- Do not ask "should I run the build?" — **always run it**
+- Do not ask "should I create a plan?" — **always plan first**
+- Do not ask "should I delegate?" — **always delegate execution**
+- Do not mark complete on generation alone
+- Do not use prohibited completion phrases (see `99-completion-gate.mdc`)
+
+## Completion Response
+
+**Complete:**
+```
+## Status: COMPLETE
+### Requirements / Validation / Review / Evidence / Documentation
+```
+
+**Incomplete:**
+```
+## Status: INCOMPLETE
+### Blocker / Next step
+```
