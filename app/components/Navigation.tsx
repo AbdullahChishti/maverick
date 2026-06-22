@@ -7,20 +7,16 @@ import { BRIEF_MAILTO } from "@/lib/utils";
 
 const links = [
   { href: "#services", label: "Services" },
-  { href: "#founders", label: "Clients" },
+  { href: "#founders", label: "About" },
   { href: "#contact", label: "Contact" },
 ];
 
 export function Navigation() {
   const [open, setOpen] = useState(false);
-  const [inHero, setInHero] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
 
   const update = useCallback(() => {
-    const hero = document.getElementById("hero");
-    if (hero) {
-      const heroBottom = hero.getBoundingClientRect().bottom;
-      setInHero(heroBottom > 80);
-    }
+    setScrolled(window.scrollY > 50);
   }, []);
 
   useEffect(() => {
@@ -39,42 +35,37 @@ export function Navigation() {
     <>
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-          inHero ? "" : "bg-white/80 backdrop-blur-md"
+          scrolled
+            ? "bg-[#0C0A09]/90 backdrop-blur-md border-b border-stone-800"
+            : "bg-transparent"
         }`}
       >
-        <div className={`h-px ${inHero ? "bg-[#26262E]" : "bg-[#E4E4E7]"}`} />
-        <nav className="container-wide flex h-16 items-center justify-between">
+        <nav className="container-wide flex h-16 lg:h-20 items-center justify-between">
           <a
             href="#"
             onClick={(e) => {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className={`text-base font-medium transition-colors duration-300 ${
-              inHero ? "text-[#F4F4F5]" : "text-[#18181B]"
-            }`}
+            className="text-lg font-semibold text-white"
           >
             Mavverik
           </a>
 
-          <div className="hidden items-center gap-8 lg:flex">
+          <div className="hidden lg:flex items-center gap-8">
             {links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleClick(e, link.href)}
-                className={`text-sm transition-colors duration-200 ${
-                  inHero
-                    ? "text-[#A1A1AA] hover:text-[#F4F4F5]"
-                    : "text-[#71717A] hover:text-[#18181B]"
-                }`}
+                className="text-sm text-stone-400 hover:text-white transition-colors"
               >
                 {link.label}
               </a>
             ))}
             <a
               href={BRIEF_MAILTO}
-              className="text-sm text-[#7C6BF5] transition-colors duration-200 hover:text-[#6355D8]"
+              className="text-sm font-medium text-white bg-violet-600 hover:bg-violet-700 px-5 py-2.5 rounded-full transition-colors"
             >
               Get in touch
             </a>
@@ -82,10 +73,10 @@ export function Navigation() {
 
           <button
             onClick={() => setOpen(true)}
-            className={`lg:hidden ${inHero ? "text-[#F4F4F5]" : "text-[#18181B]"}`}
+            className="lg:hidden text-white"
             aria-label="Open menu"
           >
-            <Menu className="h-5 w-5" />
+            <Menu className="w-6 h-6" />
           </button>
         </nav>
       </header>
@@ -96,35 +87,31 @@ export function Navigation() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-white lg:hidden"
+            className="fixed inset-0 z-50 bg-[#0C0A09] lg:hidden"
           >
-            <div className="h-px bg-[#E4E4E7]" />
             <div className="container-wide flex h-16 items-center justify-between">
-              <span className="text-base font-medium text-[#18181B]">Mavverik</span>
-              <button
-                onClick={() => setOpen(false)}
-                className="text-[#18181B]"
-                aria-label="Close menu"
-              >
-                <X className="h-5 w-5" />
+              <span className="text-lg font-semibold text-white">Mavverik</span>
+              <button onClick={() => setOpen(false)} className="text-white" aria-label="Close">
+                <X className="w-6 h-6" />
               </button>
             </div>
-            <nav className="container-wide flex flex-col gap-1 pt-8">
+            <nav className="container-wide flex flex-col gap-2 pt-8">
               {links.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleClick(e, link.href)}
-                  className="py-3 text-2xl font-medium text-[#18181B]"
+                  className="text-2xl font-medium text-white py-3"
                 >
                   {link.label}
                 </a>
               ))}
-              <div className="mt-8 border-t border-[#E4E4E7] pt-8">
-                <a href={BRIEF_MAILTO} className="text-sm text-[#7C6BF5]">
-                  {BRIEF_MAILTO.replace("mailto:", "")}
-                </a>
-              </div>
+              <a
+                href={BRIEF_MAILTO}
+                className="mt-6 inline-flex items-center justify-center text-sm font-medium text-white bg-violet-600 px-6 py-3 rounded-full"
+              >
+                Get in touch
+              </a>
             </nav>
           </motion.div>
         )}

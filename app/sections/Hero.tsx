@@ -5,64 +5,67 @@ import { BRIEF_MAILTO } from "@/lib/utils";
 
 export function Hero() {
   return (
-    <section id="hero" className="relative flex min-h-[100dvh] flex-col justify-end bg-[#0B0B0F] pb-24 pt-32 lg:pb-32">
-      {/* Subtle gradient accent */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background: `
-            radial-gradient(ellipse 50% 50% at 70% 20%, rgba(124, 107, 245, 0.08) 0%, transparent 60%),
-            radial-gradient(ellipse 40% 40% at 20% 80%, rgba(45, 212, 191, 0.04) 0%, transparent 50%)
-          `,
-        }}
-      />
+    <section id="hero" className="relative overflow-hidden bg-[#0C0A09] pt-32 pb-20 lg:pt-40 lg:pb-28">
+      {/* Gradient accent */}
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-violet-600/10 to-transparent pointer-events-none" />
 
       <div className="container-wide relative">
-        {/* Label */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          className="label label-accent mb-8"
-        >
-          AI Engineering Studio
-        </motion.p>
-
-        {/* Headline */}
-        <motion.h1
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="max-w-4xl text-[clamp(2.5rem,7vw,5.5rem)] font-medium leading-[1.05] tracking-[-0.03em] text-[#F4F4F5]"
+          transition={{ duration: 0.7 }}
         >
-          AI that
-          <br />
-          <span className="text-[#A1A1AA]">actually</span> ships.
-        </motion.h1>
+          <p className="text-violet-400 text-sm font-medium tracking-wide mb-6">
+            AI Engineering Studio
+          </p>
 
-        {/* CTA */}
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-[1.1] tracking-tight max-w-4xl">
+            We turn ambitious AI ideas into{" "}
+            <span className="text-stone-500">production systems.</span>
+          </h1>
+
+          <p className="mt-8 text-lg text-stone-400 max-w-xl leading-relaxed">
+            From concept to deployment—LLM applications, RAG systems, and AI agents built for scale, security, and compliance.
+          </p>
+
+          <div className="mt-10 flex flex-wrap gap-4">
+            <a
+              href={BRIEF_MAILTO}
+              className="inline-flex items-center gap-2 bg-white text-[#0C0A09] px-6 py-3 rounded-full font-medium text-sm hover:bg-stone-100 transition-colors"
+            >
+              Start a conversation
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+            <a
+              href="#services"
+              className="inline-flex items-center gap-2 text-stone-400 px-6 py-3 font-medium text-sm hover:text-white transition-colors"
+            >
+              See what we build
+            </a>
+          </div>
+        </motion.div>
+
+        {/* Stats row */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="mt-12 flex items-center gap-6"
+          transition={{ duration: 0.7, delay: 0.3 }}
+          className="mt-20 pt-10 border-t border-stone-800 grid grid-cols-3 gap-8"
         >
-          <a href={BRIEF_MAILTO} className="btn btn-dark">
-            Start a conversation
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={1.5}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
-              />
-            </svg>
-          </a>
+          <div>
+            <p className="text-3xl lg:text-4xl font-semibold text-white">50+</p>
+            <p className="text-sm text-stone-500 mt-1">Projects delivered</p>
+          </div>
+          <div>
+            <p className="text-3xl lg:text-4xl font-semibold text-white">12 wks</p>
+            <p className="text-sm text-stone-500 mt-1">Average delivery</p>
+          </div>
+          <div>
+            <p className="text-3xl lg:text-4xl font-semibold text-white">100%</p>
+            <p className="text-sm text-stone-500 mt-1">Production deployed</p>
+          </div>
         </motion.div>
       </div>
     </section>

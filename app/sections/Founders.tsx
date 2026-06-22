@@ -4,89 +4,60 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
 const clients = [
-  { name: "JPMorgan", industry: "Finance" },
-  { name: "Barclays", industry: "Finance" },
-  { name: "Siemens", industry: "Industrial" },
-  { name: "Audi", industry: "Automotive" },
-  { name: "Navan", industry: "Travel" },
-  { name: "myToys", industry: "Retail" },
+  { name: "JPMorgan", logo: "JPM" },
+  { name: "Barclays", logo: "BCL" },
+  { name: "Siemens", logo: "SIE" },
+  { name: "Audi", logo: "AUD" },
 ];
 
 export function Founders() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-10%" });
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="founders" ref={ref} className="bg-white py-24 lg:py-32">
+    <section id="founders" ref={ref} className="py-24 lg:py-32 bg-white">
       <div className="container-wide">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mb-16 flex flex-col justify-between gap-6 lg:mb-20 lg:flex-row lg:items-end"
-        >
-          <div>
-            <p className="label label-accent mb-4">Trusted by</p>
-            <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-medium leading-[1.2] tracking-[-0.02em] text-[#18181B]">
-              Industry leaders building
-              <br />
-              <span className="text-[#A1A1AA]">with us.</span>
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
+          {/* Left - About */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+          >
+            <p className="text-violet-600 text-sm font-medium tracking-wide mb-4">Who we are</p>
+            <h2 className="text-3xl lg:text-4xl font-semibold text-[#1C1917] leading-tight">
+              Engineers from Microsoft, OpenAI & Google.
             </h2>
-          </div>
-          <p className="max-w-xs text-sm leading-relaxed text-[#71717A]">
-            From Fortune 500 enterprises to high-growth startups in regulated industries.
-          </p>
-        </motion.div>
+            <p className="mt-6 text-stone-600 leading-relaxed">
+              We've spent years building AI infrastructure at scale. Now we help enterprises do the same—bringing production-grade engineering discipline to every project.
+            </p>
+            <p className="mt-4 text-stone-600 leading-relaxed">
+              Our team combines deep ML expertise with the systems thinking needed to ship reliable, compliant AI in regulated industries.
+            </p>
+          </motion.div>
 
-        {/* Client grid */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {clients.map((client, i) => (
-            <motion.div
-              key={client.name}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.1 + i * 0.05 }}
-              className="group relative"
-            >
-              <div className="flex items-center justify-between border border-[#E4E4E7] bg-[#FAFAFA] px-6 py-5 transition-all duration-300 hover:border-[#7C6BF5] hover:bg-white">
-                <span className="text-xl font-medium tracking-[-0.01em] text-[#18181B] transition-colors duration-300 group-hover:text-[#7C6BF5] lg:text-2xl">
-                  {client.name}
-                </span>
-                <span className="label transition-colors duration-300 group-hover:text-[#7C6BF5]">
-                  {client.industry}
-                </span>
-              </div>
-            </motion.div>
-          ))}
+          {/* Right - Clients */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.15 }}
+          >
+            <p className="text-sm font-medium text-stone-500 mb-6">Trusted by</p>
+            <div className="grid grid-cols-2 gap-4">
+              {clients.map((client) => (
+                <div
+                  key={client.name}
+                  className="flex items-center justify-center h-24 bg-stone-50 rounded-xl border border-stone-100"
+                >
+                  <span className="text-xl font-semibold text-stone-400">{client.name}</span>
+                </div>
+              ))}
+            </div>
+            <p className="mt-6 text-sm text-stone-500">
+              ...and 40+ other enterprises across finance, healthcare, and technology.
+            </p>
+          </motion.div>
         </div>
-
-        {/* Stats row */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-16 grid gap-8 border-t border-[#E4E4E7] pt-16 sm:grid-cols-3 lg:mt-20 lg:pt-20"
-        >
-          <div>
-            <p className="text-[clamp(2.5rem,6vw,3.5rem)] font-medium leading-none tracking-[-0.03em] text-[#18181B]">
-              $200M<span className="text-[#7C6BF5]">+</span>
-            </p>
-            <p className="label mt-3">AI systems deployed</p>
-          </div>
-          <div>
-            <p className="text-[clamp(2.5rem,6vw,3.5rem)] font-medium leading-none tracking-[-0.03em] text-[#18181B]">
-              57
-            </p>
-            <p className="label mt-3">Enterprise clients</p>
-          </div>
-          <div>
-            <p className="text-[clamp(2.5rem,6vw,3.5rem)] font-medium leading-none tracking-[-0.03em] text-[#18181B]">
-              12<span className="text-[#7C6BF5]">wk</span>
-            </p>
-            <p className="label mt-3">Avg. to production</p>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
