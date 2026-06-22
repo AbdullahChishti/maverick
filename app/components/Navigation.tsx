@@ -2,33 +2,25 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
 import { BRIEF_MAILTO } from "@/lib/utils";
 
 const links = [
-  { href: "#founders", label: "Results" },
-  { href: "#services", label: "Capabilities" },
+  { href: "#services", label: "Services" },
+  { href: "#founders", label: "Clients" },
   { href: "#contact", label: "Contact" },
 ];
 
 export function Navigation() {
   const [open, setOpen] = useState(false);
-  const [dark, setDark] = useState(true);
+  const [inHero, setInHero] = useState(true);
 
   const update = useCallback(() => {
-    const sections = ["hero", "services"];
-    let inDark = false;
-
-    sections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        if (rect.top <= 60 && rect.bottom > 60) {
-          inDark = true;
-        }
-      }
-    });
-
-    setDark(inDark);
+    const hero = document.getElementById("hero");
+    if (hero) {
+      const heroBottom = hero.getBoundingClientRect().bottom;
+      setInHero(heroBottom > 80);
+    }
   }, []);
 
   useEffect(() => {
@@ -45,28 +37,36 @@ export function Navigation() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50">
-        <nav className="container-wide flex h-20 items-center justify-between">
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+          inHero ? "" : "bg-white/80 backdrop-blur-md"
+        }`}
+      >
+        <div className={`h-px ${inHero ? "bg-[#26262E]" : "bg-[#E4E4E7]"}`} />
+        <nav className="container-wide flex h-16 items-center justify-between">
           <a
-            href="#hero"
-            onClick={(e) => handleClick(e, "#hero")}
-            className={`text-lg font-medium tracking-[-0.02em] transition-colors duration-300 ${
-              dark ? "text-white" : "text-black"
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className={`text-base font-medium transition-colors duration-300 ${
+              inHero ? "text-[#F4F4F5]" : "text-[#18181B]"
             }`}
           >
             Mavverik
           </a>
 
-          <div className="hidden items-center gap-10 lg:flex">
+          <div className="hidden items-center gap-8 lg:flex">
             {links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleClick(e, link.href)}
-                className={`font-mono text-[11px] uppercase tracking-[0.2em] transition-colors duration-300 ${
-                  dark
-                    ? "text-white/50 hover:text-white"
-                    : "text-black/50 hover:text-black"
+                className={`text-sm transition-colors duration-200 ${
+                  inHero
+                    ? "text-[#A1A1AA] hover:text-[#F4F4F5]"
+                    : "text-[#71717A] hover:text-[#18181B]"
                 }`}
               >
                 {link.label}
@@ -74,28 +74,18 @@ export function Navigation() {
             ))}
             <a
               href={BRIEF_MAILTO}
-              className={`flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] transition-colors duration-300 ${
-                dark
-                  ? "text-emerald-400 hover:text-emerald-300"
-                  : "text-emerald-600 hover:text-emerald-500"
-              }`}
+              className="text-sm text-[#7C6BF5] transition-colors duration-200 hover:text-[#6355D8]"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-current" />
-              Start Project
+              Get in touch
             </a>
           </div>
 
           <button
             onClick={() => setOpen(true)}
-            className={`flex h-12 w-12 items-center justify-center lg:hidden ${
-              dark ? "text-white" : "text-black"
-            }`}
+            className={`lg:hidden ${inHero ? "text-[#F4F4F5]" : "text-[#18181B]"}`}
             aria-label="Open menu"
           >
-            <div className="space-y-1.5">
-              <div className="h-0.5 w-6 bg-current" />
-              <div className="h-0.5 w-4 bg-current" />
-            </div>
+            <Menu className="h-5 w-5" />
           </button>
         </nav>
       </header>
@@ -106,46 +96,35 @@ export function Navigation() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 bg-black lg:hidden"
+            className="fixed inset-0 z-50 bg-white lg:hidden"
           >
-            <div className="container-wide flex h-20 items-center justify-between">
-              <span className="text-lg font-medium tracking-[-0.02em] text-white">
-                Mavverik
-              </span>
+            <div className="h-px bg-[#E4E4E7]" />
+            <div className="container-wide flex h-16 items-center justify-between">
+              <span className="text-base font-medium text-[#18181B]">Mavverik</span>
               <button
                 onClick={() => setOpen(false)}
-                className="flex h-12 w-12 items-center justify-center text-white"
+                className="text-[#18181B]"
                 aria-label="Close menu"
               >
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <X className="h-5 w-5" />
               </button>
             </div>
-            <nav className="container-wide flex flex-col gap-8 pt-16">
-              {links.map((link, i) => (
-                <motion.a
+            <nav className="container-wide flex flex-col gap-1 pt-8">
+              {links.map((link) => (
+                <a
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleClick(e, link.href)}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: i * 0.1 }}
-                  className="text-4xl font-medium tracking-[-0.02em] text-white"
+                  className="py-3 text-2xl font-medium text-[#18181B]"
                 >
                   {link.label}
-                </motion.a>
+                </a>
               ))}
-              <motion.a
-                href={BRIEF_MAILTO}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, delay: 0.4 }}
-                className="mt-8 text-lg text-emerald-400"
-              >
-                Start a project →
-              </motion.a>
+              <div className="mt-8 border-t border-[#E4E4E7] pt-8">
+                <a href={BRIEF_MAILTO} className="text-sm text-[#7C6BF5]">
+                  {BRIEF_MAILTO.replace("mailto:", "")}
+                </a>
+              </div>
             </nav>
           </motion.div>
         )}
